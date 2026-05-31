@@ -1,0 +1,1928 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🫧 Quiz Estômago — Anatomia Humana 🎀</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0d0f;
+    --bg2: #131318;
+    --bg3: #1a1a22;
+    --pink: #f472b6;
+    --pink-light: #fbb6ce;
+    --pink-dark: #be185d;
+    --pink-soft: #fce7f3;
+    --rose: #fb7185;
+    --rose-dark: #e11d48;
+    --white: #fdf2f8;
+    --gray: #d1d5db;
+    --gray2: #6b7280;
+    --correct: #34d399;
+    --correct-bg: #052e16;
+    --wrong: #f87171;
+    --wrong-bg: #2d0a0a;
+    --card: #18181f;
+    --card2: #1f1f2a;
+    --border: #2d2d3f;
+    --shadow: 0 8px 32px rgba(244,114,182,0.08);
+    --glow: 0 0 20px rgba(244,114,182,0.25);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* ── ELABORATE DECORATION ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(ellipse 70% 55% at 15% 8%,  rgba(244,114,182,0.14) 0%, transparent 55%),
+      radial-gradient(ellipse 50% 40% at 85% 15%,  rgba(251,113,133,0.10) 0%, transparent 50%),
+      radial-gradient(ellipse 60% 45% at 75% 85%,  rgba(244,114,182,0.11) 0%, transparent 55%),
+      radial-gradient(ellipse 40% 35% at 10% 80%,  rgba(232,121,249,0.08) 0%, transparent 50%),
+      radial-gradient(ellipse 30% 25% at 50% 50%,  rgba(244,114,182,0.04) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* noise grain overlay */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+    opacity: 0.025;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .bows-bg {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  /* floating bow emojis */
+  .bow {
+    position: absolute;
+    user-select: none;
+    animation: bowFloat var(--dur, 9s) ease-in-out infinite;
+    animation-delay: var(--delay, 0s);
+    opacity: var(--op, 0.07);
+    font-size: var(--sz, 32px);
+  }
+
+  @keyframes bowFloat {
+    0%,100% { transform: translateY(0)    rotate(var(--r0,-5deg));  opacity: var(--op,0.07); }
+    33%     { transform: translateY(-20px) rotate(var(--r1, 4deg));  opacity: calc(var(--op,0.07)*2.2); }
+    66%     { transform: translateY(-9px)  rotate(var(--r2,-9deg));  opacity: calc(var(--op,0.07)*1.4); }
+  }
+
+  /* glowing orbs */
+  .orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+    animation: orbPulse var(--dur,7s) ease-in-out infinite;
+    animation-delay: var(--delay,0s);
+  }
+
+  @keyframes orbPulse {
+    0%,100% { opacity: var(--op,0.14); transform: scale(1); }
+    50%     { opacity: calc(var(--op,0.14)*1.7); transform: scale(1.1); }
+  }
+
+  /* sparkle stars */
+  .sparkle {
+    position: absolute;
+    pointer-events: none;
+    animation: sparkleTwinkle var(--dur,3.5s) ease-in-out infinite;
+    animation-delay: var(--delay,0s);
+  }
+
+  @keyframes sparkleTwinkle {
+    0%,100% { transform: scale(0.7) rotate(0deg);   opacity: 0.3; }
+    50%     { transform: scale(1.4) rotate(180deg);  opacity: 1; }
+  }
+
+  /* tiny diamonds */
+  .diamond {
+    position: absolute;
+    width: var(--sz,6px); height: var(--sz,6px);
+    background: var(--pink);
+    transform: rotate(45deg);
+    border-radius: 1px;
+    animation: diamondDrift var(--dur,14s) ease-in-out infinite;
+    animation-delay: var(--delay,0s);
+    opacity: 0.15;
+  }
+
+  @keyframes diamondDrift {
+    0%,100% { transform: rotate(45deg)  translateY(0);    opacity: 0.15; }
+    50%     { transform: rotate(225deg) translateY(-24px); opacity: 0.38; }
+  }
+
+  /* SVG ribbon lines */
+  .ribbon-svg {
+    position: fixed;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.07;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-12px) rotate(5deg); }
+  }
+
+
+  /* ── CORNER EMOJIS ON CARDS ── */
+  .card-wrap {
+    position: relative;
+  }
+
+  .corner-emoji {
+    position: absolute;
+    font-size: 22px;
+    line-height: 1;
+    pointer-events: none;
+    z-index: 10;
+    animation: cornerWiggle var(--cdur, 4s) ease-in-out infinite;
+    animation-delay: var(--cdelay, 0s);
+    filter: drop-shadow(0 2px 8px rgba(244,114,182,0.45));
+  }
+
+  .corner-emoji.tl { top: -12px; left: -10px; }
+  .corner-emoji.tr { top: -12px; right: -10px; }
+  .corner-emoji.bl { bottom: -12px; left: -10px; }
+  .corner-emoji.br { bottom: -12px; right: -10px; }
+
+  @keyframes cornerWiggle {
+    0%,100% { transform: rotate(var(--cstart, -8deg)) scale(1);    }
+    25%      { transform: rotate(var(--cmid,    6deg)) scale(1.15); }
+    50%      { transform: rotate(var(--cend,   -4deg)) scale(0.92); }
+    75%      { transform: rotate(var(--cmid,    8deg)) scale(1.08); }
+  }
+  /* ── LAYOUT ── */
+  .app {
+    position: relative;
+    z-index: 1;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 24px 16px 60px;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    text-align: center;
+    margin-bottom: 36px;
+  }
+
+  .header-emojis {
+    font-size: 28px;
+    margin-bottom: 10px;
+    letter-spacing: 6px;
+  }
+
+  .header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(26px, 5vw, 40px);
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--pink-light), var(--pink), var(--rose));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.2;
+    margin-bottom: 6px;
+  }
+
+  .header p {
+    color: var(--gray2);
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+  }
+
+  .pink-line {
+    width: 60px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--pink), var(--rose));
+    margin: 14px auto;
+    border-radius: 2px;
+  }
+
+  /* ── SCREEN MANAGER ── */
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  /* ── START SCREEN ── */
+  .start-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 40px 36px;
+    text-align: center;
+    box-shadow: var(--shadow);
+  }
+
+  .start-card h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: var(--pink-light);
+    margin-bottom: 16px;
+  }
+
+  .start-card p {
+    color: var(--gray);
+    font-size: 14px;
+    line-height: 1.7;
+    max-width: 540px;
+    margin: 0 auto 28px;
+  }
+
+  .stats-row {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin: 24px 0 32px;
+    flex-wrap: wrap;
+  }
+
+  .stat-pill {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 10px 22px;
+    font-size: 13px;
+    color: var(--pink-light);
+    font-weight: 500;
+  }
+
+  .stat-pill span {
+    color: var(--gray2);
+    font-weight: 400;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 32px;
+    border-radius: 100px;
+    border: none;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.25s ease;
+    text-decoration: none;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--pink), var(--rose));
+    color: #fff;
+    box-shadow: 0 4px 20px rgba(244,114,182,0.35);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(244,114,182,0.5);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--gray2);
+    border: 1px solid var(--border);
+  }
+
+  .btn-ghost:hover {
+    border-color: var(--pink);
+    color: var(--pink);
+    transform: translateY(-1px);
+  }
+
+  .btn-sm { padding: 9px 18px; font-size: 12px; }
+
+  /* ── PROGRESS BAR ── */
+  .progress-wrap {
+    margin-bottom: 24px;
+  }
+
+  .progress-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    font-size: 12px;
+    color: var(--gray2);
+  }
+
+  .progress-meta .q-label {
+    color: var(--pink);
+    font-weight: 600;
+  }
+
+  .progress-meta .section-tag {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 3px 10px;
+    font-size: 11px;
+  }
+
+  .progress-bar-bg {
+    background: var(--bg3);
+    height: 5px;
+    border-radius: 100px;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--pink), var(--rose));
+    border-radius: 100px;
+    transition: width 0.5s ease;
+  }
+
+  /* ── QUESTION CARD ── */
+  .question-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 32px 30px;
+    box-shadow: var(--shadow);
+    margin-bottom: 20px;
+  }
+
+  .q-type-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(244,114,182,0.12);
+    border: 1px solid rgba(244,114,182,0.3);
+    color: var(--pink);
+    border-radius: 100px;
+    padding: 4px 12px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    margin-bottom: 16px;
+    text-transform: uppercase;
+  }
+
+  .question-text {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(16px, 2.5vw, 20px);
+    line-height: 1.5;
+    color: var(--white);
+    margin-bottom: 24px;
+    font-weight: 400;
+  }
+
+  .case-intro {
+    background: var(--bg3);
+    border-left: 3px solid var(--pink);
+    border-radius: 0 10px 10px 0;
+    padding: 14px 18px;
+    margin-bottom: 18px;
+    font-size: 13px;
+    line-height: 1.65;
+    color: var(--gray);
+  }
+
+  .case-intro strong {
+    color: var(--pink-light);
+    font-weight: 600;
+  }
+
+  /* ── OPTIONS ── */
+  .options-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .option-btn {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    background: var(--bg3);
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    padding: 14px 18px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--gray);
+    line-height: 1.5;
+    width: 100%;
+  }
+
+  .option-btn:hover:not(:disabled) {
+    border-color: var(--pink);
+    background: rgba(244,114,182,0.06);
+    color: var(--white);
+  }
+
+  .option-btn:disabled { cursor: default; }
+
+  .option-letter {
+    min-width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--gray2);
+    transition: all 0.2s;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .option-btn:hover:not(:disabled) .option-letter {
+    border-color: var(--pink);
+    color: var(--pink);
+    background: rgba(244,114,182,0.1);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: rgba(52,211,153,0.08);
+    color: var(--white);
+  }
+
+  .option-btn.correct .option-letter {
+    background: var(--correct);
+    border-color: var(--correct);
+    color: #000;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: rgba(248,113,113,0.08);
+    color: var(--gray2);
+  }
+
+  .option-btn.wrong .option-letter {
+    background: var(--wrong);
+    border-color: var(--wrong);
+    color: #fff;
+  }
+
+  .option-btn.revealed {
+    border-color: rgba(52,211,153,0.5);
+    background: rgba(52,211,153,0.04);
+  }
+
+  .option-btn.revealed .option-letter {
+    border-color: var(--correct);
+    color: var(--correct);
+  }
+
+  /* ── FEEDBACK ── */
+  .feedback-box {
+    margin-top: 18px;
+    border-radius: 14px;
+    padding: 16px 18px;
+    font-size: 13px;
+    line-height: 1.65;
+    display: none;
+  }
+
+  .feedback-box.show { display: block; }
+
+  .feedback-box.correct-fb {
+    background: rgba(52,211,153,0.06);
+    border: 1px solid rgba(52,211,153,0.3);
+  }
+
+  .feedback-box.wrong-fb {
+    background: rgba(248,113,113,0.06);
+    border: 1px solid rgba(248,113,113,0.25);
+  }
+
+  .feedback-box.revealed-fb {
+    background: rgba(244,114,182,0.06);
+    border: 1px solid rgba(244,114,182,0.25);
+  }
+
+  .fb-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    font-size: 14px;
+  }
+
+  .fb-header.correct-h { color: var(--correct); }
+  .fb-header.wrong-h { color: var(--wrong); }
+  .fb-header.revealed-h { color: var(--pink); }
+
+  .fb-text { color: var(--gray); }
+
+  /* ── ACTIONS ROW ── */
+  .actions-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 22px;
+  }
+
+  .actions-row .spacer { flex: 1; }
+
+  /* ── RESULTS SCREEN ── */
+  .results-hero {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  .results-emoji { font-size: 56px; margin-bottom: 12px; }
+
+  .results-hero h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    background: linear-gradient(135deg, var(--pink-light), var(--pink));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 6px;
+  }
+
+  .results-hero p { color: var(--gray2); font-size: 14px; }
+
+  .score-ring-wrap {
+    position: relative;
+    width: 130px;
+    height: 130px;
+    margin: 20px auto;
+  }
+
+  .score-ring-wrap svg { transform: rotate(-90deg); }
+
+  .score-text {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .score-text .score-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 30px;
+    font-weight: 900;
+    color: var(--pink);
+    line-height: 1;
+  }
+
+  .score-text .score-sub {
+    font-size: 10px;
+    color: var(--gray2);
+    margin-top: 2px;
+  }
+
+  .results-tabs {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 28px;
+    justify-content: center;
+  }
+
+  .tab-btn {
+    flex: 1;
+    max-width: 240px;
+    padding: 0;
+    border-radius: 18px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    text-align: center;
+    position: relative;
+    outline: none;
+  }
+
+  .tab-btn-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 18px 20px 14px;
+    border-radius: 18px;
+    border: 1.5px solid var(--border);
+    background: var(--card);
+    transition: all 0.3s ease;
+  }
+
+  .tab-btn:hover .tab-btn-inner {
+    border-color: var(--pink);
+    background: rgba(244,114,182,0.06);
+    transform: translateY(-3px);
+  }
+
+  .tab-btn.active-correct .tab-btn-inner {
+    border-color: var(--correct);
+    background: rgba(52,211,153,0.08);
+    box-shadow: 0 6px 24px rgba(52,211,153,0.18);
+    transform: translateY(-4px);
+  }
+
+  .tab-btn.active-wrong .tab-btn-inner {
+    border-color: var(--wrong);
+    background: rgba(248,113,113,0.08);
+    box-shadow: 0 6px 24px rgba(248,113,113,0.18);
+    transform: translateY(-4px);
+  }
+
+  .tab-emoji {
+    font-size: 32px;
+    line-height: 1;
+    display: block;
+    transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    animation: tabEmojiIdle 3s ease-in-out infinite;
+  }
+
+  .tab-btn:nth-child(1) .tab-emoji { animation-delay: 0s; }
+  .tab-btn:nth-child(2) .tab-emoji { animation-delay: 0.8s; }
+
+  @keyframes tabEmojiIdle {
+    0%,100% { transform: rotate(-5deg) scale(1); }
+    50%     { transform: rotate(6deg)  scale(1.12); }
+  }
+
+  .tab-btn.active-correct .tab-emoji,
+  .tab-btn.active-wrong  .tab-emoji {
+    animation: tabEmojiActive 0.6s cubic-bezier(0.34,1.56,0.64,1) forwards, tabEmojiIdle 3s ease-in-out 0.6s infinite;
+  }
+
+  @keyframes tabEmojiActive {
+    0%   { transform: scale(1) rotate(0deg); }
+    40%  { transform: scale(1.5) rotate(-10deg); }
+    70%  { transform: scale(0.9) rotate(5deg); }
+    100% { transform: scale(1.1) rotate(-3deg); }
+  }
+
+  .tab-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: var(--gray2);
+    transition: color 0.3s;
+  }
+
+  .tab-btn.active-correct .tab-label { color: var(--correct); }
+  .tab-btn.active-wrong  .tab-label { color: var(--wrong); }
+  .tab-btn:hover:not(.active-correct):not(.active-wrong) .tab-label { color: var(--pink); }
+
+  .tab-count {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--gray2);
+    line-height: 1;
+    transition: color 0.3s;
+  }
+
+  .tab-btn.active-correct .tab-count { color: var(--correct); }
+  .tab-btn.active-wrong  .tab-count { color: var(--wrong); }
+  .tab-btn:hover:not(.active-correct):not(.active-wrong) .tab-count { color: var(--pink); }
+
+  .tab-sublabel {
+    font-size: 11px;
+    color: var(--gray2);
+    font-weight: 400;
+  }
+
+  /* ── REVIEW LIST ── */
+  .review-list { display: flex; flex-direction: column; gap: 16px; }
+
+  .review-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .review-item-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px 20px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .review-item-header:hover { background: var(--bg3); }
+
+  .review-num {
+    min-width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .review-num.c { background: rgba(52,211,153,0.15); color: var(--correct); border: 1px solid var(--correct); }
+  .review-num.w { background: rgba(248,113,113,0.15); color: var(--wrong); border: 1px solid var(--wrong); }
+
+  .review-q-text {
+    font-size: 13px;
+    color: var(--gray);
+    line-height: 1.5;
+    flex: 1;
+  }
+
+  .review-expand {
+    color: var(--gray2);
+    font-size: 16px;
+    transition: transform 0.3s;
+    flex-shrink: 0;
+  }
+
+  .review-item.expanded .review-expand { transform: rotate(180deg); }
+
+  .review-detail {
+    display: none;
+    padding: 0 20px 16px;
+    border-top: 1px solid var(--border);
+  }
+
+  .review-item.expanded .review-detail { display: block; }
+
+  .review-answer-row {
+    display: flex;
+    gap: 10px;
+    margin: 14px 0;
+    font-size: 13px;
+    flex-wrap: wrap;
+  }
+
+  .answer-chip {
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-weight: 600;
+    font-size: 12px;
+  }
+
+  .answer-chip.you {
+    background: rgba(248,113,113,0.1);
+    border: 1px solid rgba(248,113,113,0.3);
+    color: var(--wrong);
+  }
+
+  .answer-chip.correct-chip {
+    background: rgba(52,211,153,0.1);
+    border: 1px solid rgba(52,211,153,0.3);
+    color: var(--correct);
+  }
+
+  .answer-chip.only-correct {
+    background: rgba(52,211,153,0.1);
+    border: 1px solid rgba(52,211,153,0.3);
+    color: var(--correct);
+  }
+
+  .review-explanation {
+    background: var(--bg3);
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 13px;
+    color: var(--gray);
+    line-height: 1.65;
+    border-left: 3px solid var(--pink);
+  }
+
+  .review-explanation strong { color: var(--pink-light); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeSlideIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+  }
+
+  @keyframes pop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.04); }
+    100% { transform: scale(1); }
+  }
+
+  .fade-in { animation: fadeSlideIn 0.4s ease both; }
+  .shake { animation: shake 0.35s ease; }
+  .pop { animation: pop 0.3s ease; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    .question-card { padding: 22px 18px; }
+    .start-card { padding: 28px 20px; }
+    .stats-row { gap: 12px; }
+  }
+
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 28px 0;
+  }
+
+  .results-cta-row {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 24px;
+  }
+
+  .nav-counter {
+    font-size: 12px;
+    color: var(--gray2);
+    margin: 0 4px;
+  }
+
+  .answer-status-icon {
+    font-size: 18px;
+    animation: pop 0.3s ease;
+  }
+</style>
+</head>
+<body>
+
+<!-- Bow decorations -->
+<div class="bows-bg" id="bowsBg"></div>
+
+<div class="app">
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-emojis">🫧 🎀 💉 🪷</div>
+    <h1>Quiz — Anatomia do Estômago</h1>
+    <div class="pink-line"></div>
+    <p>Cátedra de Anatomia Humana · Nível Moderado-Difícil</p>
+  </div>
+
+  <!-- START SCREEN -->
+  <div class="screen active" id="screenStart">
+    <div class="card-wrap">
+      <span class="corner-emoji tl" id="startCorner" style="--cdur:3.8s;--cdelay:0s;--cstart:-10deg;--cmid:6deg;--cend:-5deg;">🎀</span>
+      <div class="start-card fade-in">
+        <h2>🪷 Pronta para o desafio?</h2>
+        <p>Este quiz testa seu conhecimento completo sobre a anatomia do estômago — configuração, relações, vascularização, inervação, peritônio e casos clínicos reais. Questões pensadas para o nível exigido em medicina.</p>
+        <div class="stats-row">
+          <div class="stat-pill">15 <span>objetivas</span></div>
+          <div class="stat-pill">10 <span>casos clínicos</span></div>
+          <div class="stat-pill">💉 <span>nível difícil moderado</span></div>
+        </div>
+        <button class="btn btn-primary" onclick="startQuiz()">🎀 Começar Quiz</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUIZ SCREEN -->
+  <div class="screen" id="screenQuiz">
+    <div class="progress-wrap">
+      <div class="progress-meta">
+        <span class="q-label" id="qLabel">Questão 1 de 25</span>
+        <span class="section-tag" id="sectionTag">Objetiva</span>
+      </div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="progressFill" style="width:4%"></div>
+      </div>
+    </div>
+
+    <div class="card-wrap" id="questionCardWrap">
+      <span class="corner-emoji tl" id="ceqTL" style="--cdur:4.2s;--cdelay:0.2s;--cstart:-9deg;--cmid:5deg;--cend:-6deg;">🌸</span>
+      <div class="question-card fade-in" id="questionCard">
+        <div class="q-type-badge" id="qTypeBadge">💉 Anatomia</div>
+        <div class="case-intro" id="caseIntro" style="display:none"></div>
+        <div class="question-text" id="questionText"></div>
+        <div class="options-list" id="optionsList"></div>
+        <div class="feedback-box" id="feedbackBox">
+          <div class="fb-header" id="fbHeader"></div>
+          <div class="fb-text" id="fbText"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions-row">
+      <button class="btn btn-ghost btn-sm" onclick="prevQuestion()">← Anterior</button>
+      <button class="btn btn-ghost btn-sm" onclick="resetQuestion()">↺ Resetar</button>
+      <button class="btn btn-ghost btn-sm" onclick="showAnswer()">👁 Ver resposta</button>
+      <button class="btn-dontknow" onclick="markDontKnow()" id="btnDontKnow">🤍 Não sei</button>
+      <div class="spacer"></div>
+      <span class="nav-counter" id="navCounter"></span>
+      <button class="btn btn-primary btn-sm" onclick="nextQuestion()" id="btnNext">Próxima →</button>
+    </div>
+  </div>
+
+  <!-- RESULTS SCREEN -->
+  <div class="screen" id="screenResults">
+    <div class="card-wrap" style="display:block">
+      <span class="corner-emoji tl" id="resCorner" style="--cdur:4.0s;--cdelay:0.3s;--cstart:-8deg;--cmid:5deg;--cend:-6deg;">🪷</span>
+      <div class="results-hero fade-in">
+      <div class="results-emoji" id="resultsEmoji">🎀</div>
+      <h2 id="resultsTitle">Quiz Finalizado!</h2>
+      <p id="resultsSubtitle"></p>
+      <div class="score-ring-wrap">
+        <svg width="130" height="130" viewBox="0 0 130 130">
+          <circle cx="65" cy="65" r="55" fill="none" stroke="#1f1f2a" stroke-width="12"/>
+          <circle cx="65" cy="65" r="55" fill="none" stroke="url(#grad)" stroke-width="12"
+            stroke-linecap="round" id="scoreArc" stroke-dasharray="345.4" stroke-dashoffset="345.4"/>
+          <defs>
+            <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" style="stop-color:#f472b6"/>
+              <stop offset="100%" style="stop-color:#fb7185"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <div class="score-text">
+          <span class="score-num" id="scoreNum">0</span>
+          <span class="score-sub">acertos</span>
+        </div>
+      </div>
+      </div>
+
+    <div class="results-tabs" style="gap:10px;">
+      <button class="tab-btn" id="tabCorrect" onclick="showTab('correct')">
+        <div class="tab-btn-inner">
+          <span class="tab-emoji">🌸</span>
+          <span class="tab-count" id="correctCount">0</span>
+          <span class="tab-label">Acertos</span>
+          <span class="tab-sublabel">você mandou bem ✓</span>
+        </div>
+      </button>
+      <button class="tab-btn" id="tabWrong" onclick="showTab('wrong')">
+        <div class="tab-btn-inner">
+          <span class="tab-emoji">🫧</span>
+          <span class="tab-count" id="wrongCount">0</span>
+          <span class="tab-label">Erros</span>
+          <span class="tab-sublabel">hora de revisar !</span>
+        </div>
+      </button>
+      <button class="tab-btn" id="tabLearn" onclick="showTab('learn')">
+        <div class="tab-btn-inner">
+          <span class="tab-emoji">📖</span>
+          <span class="tab-count" id="learnCount">0</span>
+          <span class="tab-label">Aprender</span>
+          <span class="tab-sublabel">não sabia ainda</span>
+        </div>
+      </button>
+    </div>
+
+    <div class="review-list" id="reviewList"></div>
+
+    <div class="results-cta-row">
+      <button class="btn btn-ghost" onclick="resetAll()">↺ Refazer quiz</button>
+      <button class="btn btn-primary" onclick="startQuiz()">🎀 Novo quiz</button>
+    </div>
+  </div>
+
+  <div style="text-align:center; margin-top: 48px; padding-bottom: 12px;">
+    <span style="font-family:'Playfair Display',serif; font-size:13px; color: var(--gray2); letter-spacing:1px;">By: <span style="color:var(--pink); font-weight:700;">Nayaro</span> 🎀</span>
+  </div>
+</div>
+</div>
+
+<script>
+/* ═══════════════ DATA ═══════════════ */
+const ALL_QUESTIONS = [
+  // ──────────────────────────────────────────
+  //  OBJETIVAS (1-15)
+  // ──────────────────────────────────────────
+  {
+    type: "objetiva",
+    badge: "🫧 Morfologia",
+    text: "Em relação à configuração externa do estômago, qual afirmativa está CORRETA sobre a porção pilórica?",
+    options: [
+      "Corresponde ao fundo gástrico, delimitado pelo plano do borde inferior do cárdias",
+      "É formada exclusivamente pelo esfínter pilórico, sem distinção de antro",
+      "Está localizada na curvatura maior, próxima ao ligamento gastroesplénico",
+      "É a porção mais superior do estômago, situada abaixo do diafragma",
+      "É de direção horizontal e representa a parte mais declive do estômago, onde se localiza o antro pilórico"
+        ],
+    correct: 4,
+    explanation: "A porção pilórica tem direção horizontal e representa a parte mais declive do estômago. Ela une a porção vertical à horizontal, sendo o antro pilórico sua primeira parte. O fundus (tuberosidade maior) é a porção superior abaixo do diafragma, não a pilórica."
+  },
+  {
+    type: "objetiva",
+    badge: "🎀 Anatomia Topográfica",
+    text: "O ângulo de His (incisura cárdica) é formado pela junção de qual estrutura com o estômago?",
+    options: [
+      "Borda esquerda do esôfago abdominal com a curvatura maior",
+      "Borda superior do duodeno com a curvatura menor",
+      "Junção esofagogástrica com o antro pilórico",
+      "Liga o esôfago ao ligamento gastroesplénico",
+      "Borda direita do esôfago com a curvatura menor"
+        ],
+    correct: 0,
+    explanation: "O ângulo de His (incisura cárdica) é formado pelo borde esquerdo do esôfago abdominal com a curvatura maior do estômago, criando um ângulo agudo aberto para cima. Esse ângulo tem função antirrefluxo importante — quando agudo, dificulta o refluxo gastroesofágico."
+  },
+  {
+    type: "objetiva",
+    badge: "💉 Histologia/Anatomia",
+    text: "A válvula de Gubarow (válvula do cárdias) tem como principal função fisiológica:",
+    options: [
+      "Produzir fator intrínseco de Castle",
+      "Controlar a passagem do bolo alimentar do esôfago para o estômago",
+      "Opor-se ao refluxo gastroesofágico quando bem desenvolvida",
+      "Secretar suco gástrico ácido pelas células parietais",
+      "Regular o esvaziamento gástrico para o duodeno"
+        ],
+    correct: 2,
+    explanation: "A válvula do cárdias (válvula de Gubarow) é uma prega da mucosa gástrica que, quando presente e bem desenvolvida, se opõe ao refluxo gastroesofágico. Sua ausência ou hipoplasia contribui para a DRGE. O esvaziamento gástrico é controlado pelo esfínter pilórico."
+  },
+  {
+    type: "objetiva",
+    badge: "🪷 Vascularização",
+    text: "O arco vascular da curvatura MENOR do estômago é formado por quais artérias?",
+    options: [
+      "Artérias gastroepiploicas direita e esquerda",
+      "Artéria mesentérica superior e artéria hepática própria",
+      "Artérias gástricas curtas e artéria gastroepiploica direita",
+      "Artéria gástrica direita e artéria gástrica esquerda (coronária estomáquica)",
+      "Artéria esplênica e artéria hepática comum"
+        ],
+    correct: 3,
+    explanation: "A curvatura menor é vascularizada pelo arco formado pela artéria coronária estomáquica (gástrica esquerda, ramo do tronco celíaco) e a artéria gástrica direita (ramo da hepática). Já a curvatura MAIOR é vascularizada pelas artérias gastroepiploicas direita e esquerda."
+  },
+  {
+    type: "objetiva",
+    badge: "🫧 Relações Peritoneais",
+    text: "Quais são os três epiplônios que compõem o peritônio gástrico?",
+    options: [
+      "Epiplônio hepatoduodenal, gastrocólico e mesentérico",
+      "Epiplônio phrenicoesplênico, gastrocólico e gastroduodenal",
+      "Epiplônio gastrocólico, hepatoduodenal e pancreaticoduodenal",
+      "Epiplônio maior (gastrocólico), menor (gastrohepático) e gastroesplénico",
+      "Ligamento falciforme, epiplônio menor e mesentério"
+        ],
+    correct: 3,
+    explanation: "O peritônio gástrico é composto por: (1) Epiplônio MAIOR ou gastrocólico — une curvatura maior ao cólon; (2) Epiplônio MENOR ou gastrohepático — une curvatura menor ao fígado; (3) Epiplônio GASTROESPLÉNICO — une a curvatura maior ao baço."
+  },
+  {
+    type: "objetiva",
+    badge: "💉 Neuroanatomia",
+    text: "A inervação autônoma do estômago provém de:",
+    options: [
+      "Nervos vagos (X par) e sistema simpático (plexo celíaco)",
+      "Nervos vagos e nervo frênico, sem participação simpática",
+      "Nervo glossofaríngeo (IX par) e nervos esplâncnicos maiores",
+      "Nervo frênico e plexo solar exclusivamente",
+      "Sistema simpático exclusivamente, via plexo mesentérico superior"
+        ],
+    correct: 0,
+    explanation: "A inervação gástrica é dupla: PARASSIMPÁTICA via nervos vagos (X par) — vago anterior (nervo principal anterior da curvatura menor) e vago posterior — e SIMPÁTICA via plexo celíaco, onde fibras simpáticas e parassimpáticas se misturam. Os vagos são fundamentais para a regulação secretora e motora."
+  },
+  {
+    type: "objetiva",
+    badge: "🪷 Constituição Anatômica",
+    text: "Sobre a camada muscular do estômago, qual afirmativa é VERDADEIRA?",
+    options: [
+      "A camada circular é exclusiva do antro, enquanto o fundus tem apenas fibras longitudinais",
+      "A musculatura lisa gástrica não difere estruturalmente da esofágica",
+      "As fibras oblíquas estão presentes apenas no esfínter pilórico",
+      "Possui duas camadas: circular interna e longitudinal externa, como no restante do TGI",
+      "Possui três camadas musculares (longitudinal, circular e oblíqua), sendo que as fibras longitudinais formam a 'Corbata Suíça' na curvatura menor"
+        ],
+    correct: 4,
+    explanation: "O estômago possui três camadas musculares: longitudinal (externa), circular (média) e oblíqua (interna — exclusiva do estômago entre os órgãos do TGI). Na curvatura menor, as fibras longitudinais formam a chamada 'Corbata Suíça' por sua disposição característica."
+  },
+  {
+    type: "objetiva",
+    badge: "🫧 Topografia",
+    text: "A Transcavidade dos Epiplônios (bursa omentalis) tem como limite DIREITO:",
+    options: [
+      "A união dos epiplônios gastroesplénico e pancreaticoesplénico",
+      "A parede posterior do abdômen e a região retroperitoneal",
+      "O vestíbulo, que contém o Forame de Winslow (hiato de Winslow)",
+      "O epiplônio gastrocólico",
+      "A face inferior do fígado"
+        ],
+    correct: 2,
+    explanation: "A transcavidade dos epiplônios tem como limite DIREITO o vestíbulo, que contém o Forame Bursa Omentalis (Forame/Hiato de Winslow) — a entrada para a transcavidade. O limite ESQUERDO é a união dos epiplônios gastroesplénico e pancreaticoesplénico."
+  },
+  {
+    type: "objetiva",
+    badge: "🎀 Dimensões",
+    text: "As dimensões médias e capacidade do estômago adulto são aproximadamente:",
+    options: [
+      "25 × 12 × 8 cm, capacidade de 3.000 cm³ em esforço máximo",
+      "25 × 12 × 8 cm, capacidade média de 1.300 cm³",
+      "20 × 10 × 6 cm, capacidade de 800 cm³",
+      "15 × 8 × 5 cm, capacidade de 500 cm³",
+      "30 × 15 × 10 cm, capacidade de 2.500 cm³"
+        ],
+    correct: 1,
+    explanation: "O estômago adulto mede aproximadamente 25 × 12 × 8 cm, com capacidade média de 1.300 cm³. É importante lembrar que a capacidade varia com distensão (pode chegar a 4L). Ocupa o epigástrio e o hipocôndrio esquerdo, com forma de J maiúsculo."
+  },
+  {
+    type: "objetiva",
+    badge: "💉 Vascularização Venosa",
+    text: "As veias do estômago drenam, ao final, para qual vaso principal?",
+    options: [
+      "Veia porta hepática",
+      "Veia mesentérica superior exclusivamente",
+      "Sistema ázigos, via veias esofágicas",
+      "Veia esplênica, sem conexão com o sistema portal",
+      "Veia cava inferior, diretamente"
+        ],
+    correct: 0,
+    explanation: "As veias gástricas são homólogas às artérias em nome e trajeto, mas drenam progressivamente até a veia PORTA hepática. Isso é clinicamente relevante: na hipertensão portal, varizes gástricas e esofágicas se formam por inversão de fluxo nesse sistema."
+  },
+  {
+    type: "objetiva",
+    badge: "🪷 Relações Anatômicas",
+    text: "Qual estrutura constitui o limite POSTERIOR da Transcavidade dos Epiplônios?",
+    options: [
+      "Face inferior do fígado e diafragma",
+      "Face posterior do estômago exclusivamente",
+      "Baço e hilo esplênico",
+      "Epiplônio maior e cólon transverso",
+      "Parede posterior do abdômen, região retroperitoneal e pâncreas"
+        ],
+    correct: 4,
+    explanation: "O limite POSTERIOR da transcavidade dos epiplônios é a parede posterior do abdômen com a região retroperitoneal, incluindo o pâncreas. O limite ANTERIOR é a face posterior do estômago. O limite SUPERIOR é a face inferior do fígado. O INFERIOR é o epiplônio gastrocólico."
+  },
+  {
+    type: "objetiva",
+    badge: "🫧 Mucosa Gástrica",
+    text: "Sobre a configuração interna gástrica, quais são as quatro camadas da parede gástrica, da mais superficial à mais profunda?",
+    options: [
+      "Serosa, submucosa, muscular, mucosa",
+      "Serosa, muscular, submucosa, mucosa",
+      "Mucosa, submucosa, muscular, serosa",
+      "Mucosa, muscular da mucosa, submucosa, muscular",
+      "Adventícia, muscular, submucosa, mucosa"
+        ],
+    correct: 1,
+    explanation: "A parede gástrica, da mais superficial à mais profunda, compreende: (1) Serosa — peritônio visceral; (2) Muscular — três camadas de fibras; (3) Submucosa — tecido conjuntivo frouxo vascularizado; (4) Mucosa — com suas glândulas secretoras. Essa ordem é típica do TGI."
+  },
+  {
+    type: "objetiva",
+    badge: "🎀 Relações Ósseas",
+    text: "Quais são as referências ósseas/topográficas clássicas relacionadas à projeção gástrica na parede abdominal?",
+    options: [
+      "Triângulo femoral e linha alba",
+      "Triângulo de Labbé e Espaço Semilunar de Traube",
+      "Triângulo de Calot e linha de Toldt",
+      "Triângulo de Petit e espaço de Retzius",
+      "Triângulo de Hesselbach e espaço de Bogros"
+        ],
+    correct: 1,
+    explanation: "As referências ósseas clássicas do estômago são: TRIÂNGULO DE LABBÉ (delimitado pelas bordas costal e linha vertical) — área de acesso cirúrgico ao estômago; ESPAÇO SEMILUNAR DE TRAUBE — macicez timpânica à percussão, delimitado pelas costelas inferiores esquerdas e baço, preenchido pela câmara de ar gástrica."
+  },
+  {
+    type: "objetiva",
+    badge: "💉 Píloro",
+    text: "O píloro é marcado externamente por qual característica anatômica que corresponde ao esfínter pilórico?",
+    options: [
+      "O píloro não possui marcadores externos, sendo identificado apenas internamente",
+      "Uma curvatura acentuada entre o antro e o bulbo duodenal",
+      "Um espessamento e estreitamento muscular correspondente ao esfínter pilórico, palpável externamente",
+      "Apenas uma mudança de coloração da serosa, sem relevo muscular",
+      "Uma projeção mucosa em forma de válvula, visível endoscopicamente como pregas convergentes"
+        ],
+    correct: 2,
+    explanation: "O píloro está situado na parte inferior da curvatura menor e é marcado externamente por um ESPESSAMENTO e ESTREITAMENTO que correspondem ao esfínter pilórico — estrutura de músculo liso circular que controla o esvaziamento gástrico. Ao contrário do cárdias, que não tem relevo muscular externo, o píloro é palpável."
+  },
+  {
+    type: "objetiva",
+    badge: "🪷 Forame de Winslow",
+    text: "O Forame de Winslow (Hiato de Winslow) é a entrada da Transcavidade dos Epiplônios. Anatomicamente, está contido em qual porção da transcavidade?",
+    options: [
+      "No vestíbulo, como entrada lateral direita da transcavidade",
+      "É a mesma estrutura que o Foramen Bursa Omentalis, sem distinção anatômica",
+      "No Foramen Bursa Omentalis, formado pela foice da coronária e foice da hepática",
+      "A — No vestíbulo; B — O Forame de Winslow É o hiato de Winslow, sendo a 1ª entrada da transcavidade",
+      "Na cavidade propriamente dita, como sua abertura posterior"
+        ],
+    correct: 3,
+    explanation: "A transcavidade tem 4 porções: (1ª) Hiato de Winslow = entrada principal; (2ª) Vestíbulo; (3ª) Foramen Bursa Omentalis — formado pela foice da artéria coronária e foice da artéria hepática; (4ª) Cavidade propriamente dita. São estruturas distintas e em sequência."
+  },
+
+  // ──────────────────────────────────────────
+  //  CASOS CLÍNICOS (16-25)
+  // ──────────────────────────────────────────
+  {
+    type: "caso",
+    badge: "🎀 Caso Clínico 1",
+    caseText: "<strong>Paciente M.L., 42 anos, feminina.</strong> Queixa-se de pirose intensa após refeições, regurgitação ácida ao deitar e tosse seca noturna há 8 meses. Endoscopia: esôfago de Barrett incipiente. Manometria: pressão do EIE reduzida para 6 mmHg (normal: 10–45 mmHg). Radiografia contrastada mostra passagem livre de contraste gastroesofágica.",
+    text: "Qual estrutura anatômica, quando hipoplásica ou ausente, contribui DIRETAMENTE para a fisiopatologia desta paciente, além do EIE?",
+    options: [
+      "Válvula de Gubarow (válvula do cárdias) pouco desenvolvida, reduzindo a barreira antirrefluxo mucosa",
+      "Hipertrofia da musculatura oblíqua gástrica comprimindo o cárdias",
+      "Falha na válvula de Bauhin (ileocecal), causando refluxo em alça",
+      "Esfínter pilórico hipotônico, permitindo refluxo duodenogástrico",
+      "Ausência do ângulo de His, que normalmente favorece o refluxo"
+        ],
+    correct: 0,
+    explanation: "A válvula de Gubarow é uma prega da mucosa gástrica no cárdias que, quando bem desenvolvida, age como mecanismo antirrefluxo mucoso. Sua hipoplasia, somada ao EIE hipotônico e ao ângulo de His obtuso (menos agudo que o normal de ~30–40°), compromete os três mecanismos naturais de contenção do refluxo. O ângulo de His AGUDO dificulta o refluxo — ao contrário da alternativa D."
+  },
+  {
+    type: "caso",
+    badge: "💉 Caso Clínico 2",
+    caseText: "<strong>Paciente R.S., 58 anos, masculino.</strong> Cirrótico por álcool, Child-Pugh B. Internado por hematêmese volumosa. Endoscopia de urgência: varizes fúndicas grau III sangrantes e varizes esofágicas grau II. Pressão portal estimada em 18 mmHg.",
+    text: "O sangramento fúndico neste paciente está relacionado com o sistema venoso de drenagem gástrica. Qual vaso forma a principal conexão porto-sistêmica responsável pelas varizes fúndicas?",
+    options: [
+      "Veia gástrica direita (pilórica) conectando-se à veia cava inferior",
+      "Veias gástricas curtas (ramos da veia esplênica) comunicando-se com veias esofágicas",
+      "Veia gastroepiploica esquerda drenando diretamente para o sistema cava",
+      "Veia mesentérica inferior comunicando-se com veias gástricas",
+      "Veia coronária estomáquica (gástrica esquerda) drenando para o sistema ázigos"
+        ],
+    correct: 1,
+    explanation: "As varizes FÚNDICAS são alimentadas principalmente pelas veias gástricas curtas (ramos da veia esplênica) e pela veia gastroepiploica esquerda. Na hipertensão portal, essas veias se dilatam e comunicam com o sistema venoso esofágico/paraesofágico (sistema ázigos), criando shunts porto-sistêmicos — base das varizes fúndicas e gastroesofágicas."
+  },
+  {
+    type: "caso",
+    badge: "🪷 Caso Clínico 3",
+    caseText: "<strong>Paciente T.A., 35 anos, feminina.</strong> Neonata com vômitos em jato não biliosos 3 semanas após o nascimento. Palpação: massa olivar no epigástrio direito. USG: espessamento do músculo pilórico (espessura > 4 mm, diâmetro > 14 mm). Diagnóstico: estenose hipertrófica do piloro.",
+    text: "A estenose hipertrófica do piloro compromete qual estrutura anatômica específica, e quais alterações metabólicas decorrem do quadro clínico descrito?",
+    options: [
+      "Hipertrofia do esfínter pilórico (músculo circular); gera alcalose metabólica hipoclorêmica hipocalêmica",
+      "Obstrução da transição antroduodenal por aderência peritoneal; gera acidose mista",
+      "Espasmo da válvula de Gubarow; gera acidose respiratória compensada",
+      "Obstrução pelo ângulo de His; gera alcalose metabólica com hipercalemia",
+      "Hipertrofia da musculatura longitudinal do antro; gera acidose metabólica hipercalêmica"
+        ],
+    correct: 0,
+    explanation: "A estenose hipertrófica do piloro é causada por hipertrofia do músculo circular do ESFÍNTER PILÓRICO. Os vômitos não biliosos (antes do duodeno) e em jato causam perda de HCl → alcalose metabólica hipoclorêmica; a perda de K+ pelos rins (tentando reter H+) causa hipocalemia. Tratamento: piloromiotomia de Ramstedt."
+  },
+  {
+    type: "caso",
+    badge: "🫧 Caso Clínico 4",
+    caseText: "<strong>Paciente F.M., 62 anos, masculino.</strong> Submetido a gastrectomia subtotal por adenocarcinoma gástrico. No 3º PO, desenvolve anemia megaloblástica progressiva. Investigação: anti-fator intrínseco positivo, vitamina B12 sérica de 98 pg/mL (N: 200–900).",
+    text: "Qual tipo celular da mucosa gástrica, e em qual região do estômago, é responsável pela produção do fator intrínseco de Castle?",
+    options: [
+      "Células mucosas do colo, distribuídas por todo o estômago",
+      "Células enteroendócrinas do antro e duodeno",
+      "Células parietais (oxínticas) do fundus e corpo gástrico, que produzem HCl E fator intrínseco",
+      "Células principais do fundus e corpo, produtoras de pepsinogênio",
+      "Células G do antro, produtoras de gastrina"
+        ],
+    correct: 2,
+    explanation: "As CÉLULAS PARIETAIS (oxínticas), localizadas no fundus e corpo gástrico, produzem tanto HCl (via H+/K+ ATPase) quanto o FATOR INTRÍNSECO DE CASTLE. A gastrectomia remove essas células, eliminando a produção de FI → má absorção de B12 no íleo terminal → anemia megaloblástica. Células G do antro produzem gastrina; células principais produzem pepsinogênio."
+  },
+  {
+    type: "caso",
+    badge: "🎀 Caso Clínico 5",
+    caseText: "<strong>Paciente A.P., 50 anos, feminino.</strong> Em investigação de massa abdominal. TC: lesão retroperitoneal de 6 cm posterior ao estômago. Cirurgiã planeja acesso pela Transcavidade dos Epiplônios. Durante a cirurgia, identifica o Hiato de Winslow.",
+    text: "Quais são os limites clássicos do Hiato de Winslow (Forame Epiploico)?",
+    options: [
+      "Anteriormente: duodeno; Posteriormente: VCI; Superiormente: lobo caudado do fígado; Inferiormente: páncreas",
+      "Anteriormente: ligamento falciforme; Posteriormente: aorta; Superiormente: diafragma; Inferiormente: estômago",
+      "Anteriormente: ligamento hepatoduodenal (contendo veia porta, artéria hepática e colédoco); Posteriormente: VCI; Superiormente: lobo caudado do fígado; Inferiormente: 1ª porção do duodeno",
+      "Anteriormente: omento menor; Posteriormente: pâncreas; Superiormente: hilo hepático; Inferiormente: duodeno",
+      "Anteriormente: colédoco; Posteriormente: veia esplênica; Superiormente: lobo quadrado; Inferiormente: mesocólon"
+        ],
+    correct: 2,
+    explanation: "O Hiato (Forame) de Winslow tem como limites: ANTERIOR — ligamento hepatoduodenal (contendo a tríade portal: veia porta, artéria hepática própria e colédoco); POSTERIOR — veia cava inferior (VCI); SUPERIOR — lobo caudado do fígado (segmento I); INFERIOR — 1ª porção do duodeno. É a única comunicação entre a bolsa omental e o restante da cavidade peritoneal."
+  },
+  {
+    type: "caso",
+    badge: "💉 Caso Clínico 6",
+    caseText: "<strong>Paciente C.R., 48 anos, masculino.</strong> Úlcera péptica gástrica perfurada na parede posterior do corpo gástrico. Peritonismo localizado com derrame para a transcavidade dos epiplônios. Cirurgião realiza acesso pela transcavidade via epiplônio gastrocólico.",
+    text: "Por qual epiplônio o cirurgião acessou a transcavidade, e qual curvatura gástrica esse epiplônio conecta ao cólon transverso?",
+    options: [
+      "Epiplônio pancreaticoesplénico; conecta o pâncreas ao baço sem relação gástrica",
+      "Epiplônio gastrohepático (menor); conecta a curvatura menor ao fígado",
+      "Epiplônio gastrocólico (maior); conecta a curvatura MAIOR do estômago ao cólon transverso",
+      "Ligamento hepatoduodenal; conecta o duodeno ao hilo hepático",
+      "Epiplônio gastroesplénico; conecta a curvatura maior ao baço"
+        ],
+    correct: 2,
+    explanation: "O EPIPLÔNIO GASTROCÓLICO (epiplônio MAIOR) conecta a curvatura MAIOR do estômago ao cólon transverso. É o acesso cirúrgico clássico para entrar na transcavidade dos epiplônios (bursa omentalis). Sua secção permite visualizar a face posterior gástrica e o pâncreas — importante em cirurgias de úlceras perfuradas da parede posterior."
+  },
+  {
+    type: "caso",
+    badge: "🪷 Caso Clínico 7",
+    caseText: "<strong>Paciente L.T., 29 anos, feminino.</strong> Pós-operatório de vagotomia troncular bilateral para úlcera péptica refratária. Desenvolve gastroparesia severa e diarreia episódica. Gastroenterologista explica que a vagotomia compromete o controle autonômico gástrico.",
+    text: "O vago anterior corresponde anatomicamente a qual nervo gástrico específico, e qual curvatura gástrica ele inerva preferencialmente?",
+    options: [
+      "Nervo principal anterior da curvatura MENOR; corresponde ao vago anterior e inerva preferentemente a curvatura menor anterior",
+      "Nervo frênico esquerdo; desce pelo diafragma até inervar o fundo gástrico",
+      "Ramo anterior do nervo esplâncnico maior; inerva a mucosa do corpo gástrico",
+      "Nervo celíaco anterior; inerva o antro e o piloro via plexo celíaco",
+      "Nervo posterior principal da curvatura maior; inerva preferencialmente o fundus"
+        ],
+    correct: 0,
+    explanation: "O VAGO ANTERIOR corresponde ao 'nervo principal anterior da curvatura menor'. O VAGO POSTERIOR corresponde ao 'nervo posterior principal da curvatura menor'. Ambos percorrem a curvatura menor. Ramos adicionais chegam ao estômago via plexo celíaco (fibras parassimpáticas e simpáticas misturadas). A vagotomia troncular bilateral secciona os dois vagos, eliminando o estímulo colinérgico à motilidade e à secreção ácida."
+  },
+  {
+    type: "caso",
+    badge: "🫧 Caso Clínico 8",
+    caseText: "<strong>Paciente B.N., 55 anos, masculino.</strong> Diagnóstico de adenocarcinoma gástrico difuso (linite plástica) envolvendo toda a parede gástrica. Estadiamento indica linfonodos positivos ao longo da curvatura maior e menor. Oncologista discute com cirurgião os territórios linfáticos a serem ressecados.",
+    text: "A drenagem linfática do estômago segue, em geral, o trajeto das artérias. O linfonodo-sentinela principal da curvatura MENOR drena, em última instância, para qual cadeia linfonodal?",
+    options: [
+      "Linfonodos mesentéricos superiores exclusivamente",
+      "Linfonodos paraórticos esquerdos, sem passar pelo tronco celíaco",
+      "Linfonodos inguinais superficiais, via tronco intestinal",
+      "Diretamente ao ducto torácico, sem estação linfonodal intermediária",
+      "Linfonodos celíacos (pericéliacos), via vasos linfáticos que acompanham a artéria gástrica esquerda"
+        ],
+    correct: 4,
+    explanation: "A drenagem linfática do estômago acompanha as artérias: linfa da curvatura menor segue a artéria gástrica esquerda → linfonodos gástricos esquerdos → LINFONODOS CELÍACOS → tronco intestinal → cisterna do quilo → ducto torácico. O câncer gástrico avançado pode disseminar para o linfonodo de Virchow (supraclavicular esquerdo), via ducto torácico."
+  },
+  {
+    type: "caso",
+    badge: "🎀 Caso Clínico 9",
+    caseText: "<strong>Paciente G.O., 33 anos, masculino.</strong> Trauma abdominal fechado por acidente motociclístico. TC mostra hematoma retroperitoneal anterior à aorta, posterior ao pâncreas e à face posterior do estômago, contido na bolsa omental. Cirurgião opta por acesso laparoscópico à transcavidade.",
+    text: "A face posterior do estômago é o limite ANTERIOR da transcavidade. Qual estrutura anatômica importante, intimamente relacionada ao limite posterior desta cavidade, está em risco neste trauma?",
+    options: [
+      "Fígado e via biliar extra-hepática",
+      "Pâncreas (corpo e cauda), localizado na parede posterior da transcavidade sobre o retroperitônio",
+      "Aorta abdominal, logo abaixo do tronco celíaco",
+      "Baço, logo que está no limite esquerdo da transcavidade",
+      "Rins e glândulas suprarrenais, imediatamente posteriores ao peritônio parietal posterior"
+        ],
+    correct: 1,
+    explanation: "O limite POSTERIOR da transcavidade dos epiplônios é a parede posterior do abdômen e região retroperitoneal, onde o PÂNCREAS (corpo e cauda) está intimamente aplicado. Um trauma da bolsa omental quase sempre coloca o pâncreas em risco — causa frequente de pancreatite traumática. O hematoma descrito anterior à aorta e posterior ao pâncreas sugere lesão pancreática ou peripancreática."
+  },
+  {
+    type: "caso",
+    badge: "💉 Caso Clínico 10",
+    caseText: "<strong>Paciente H.S., 67 anos, masculino.</strong> Gastrectomia total por câncer gástrico proximal. No 5º PO, paciente apresenta febre, taquicardia e drenagem com aspecto bilioso pelo dreno abdominal. Exame físico: dor em hipocôndrio esquerdo. Suspeita: fístula da anastomose esofagojejunal.",
+    text: "A incisura angular (incisura angularis) é um importante marco anatômico do estômago. Em qual localização se encontra e qual é seu significado clínico?",
+    options: [
+      "Localiza-se na curvatura MAIOR, no ponto de maior convexidade do fundus; clinicamente marca o limite do fundo gástrico",
+      "Localiza-se no antro pilórico, marcando a transição para o esfínter",
+      "É o ângulo formado pela junção do esôfago com o fundus gástrico (ângulo de His); sua obliteração causa refluxo",
+      "Localiza-se na curvatura MENOR, na junção das porções vertical e horizontal do estômago; é o local mais comum de úlceras gástricas benignas",
+      "É a junção da incisura cárdica com o fundus, sem significado clínico definido"
+        ],
+    correct: 3,
+    explanation: "A INCISURA ANGULARIS (incisura angular) localiza-se na curvatura MENOR, no ponto de deflexão entre as porções vertical e horizontal do estômago — ou seja, na união dessas porções. Clinicamente é muito importante: é o local de MAIOR INCIDÊNCIA de úlceras gástricas benignas e de adenocarcinoma do tipo intestinal. Também serve de referência endoscópica para determinar a transição antro-corpo."
+  }
+];
+
+/* ═══════════════ STATE ═══════════════ */
+let currentQ = 0;
+let answers = new Array(ALL_QUESTIONS.length).fill(null); // null | {chosen, revealed, dontknow}
+let currentTab = 'wrong';
+
+/* Aula detalhada por questão (índice 0-24) */
+const LESSONS = [
+  // Q1 — Porção pilórica
+  { slideRef: "Slide 6 — Configuração Externa", content: `<span class="aula-title">📚 Porção Pilórica do Estômago</span>O estômago divide-se em duas porções principais quanto à direção: <strong>vertical</strong> (fundus + corpo + extremidade inferior) e <strong>pilórica</strong> (horizontal).<br><br>A porção pilórica é caracterizada por:<ul><li>Direção <em>horizontal</em></li><li>Ser a parte mais <em>declive</em> (mais baixa) do estômago</li><li>Conter o <em>antro pilórico</em> como sua primeira parte</li><li>Terminar no <em>esfínter pilórico</em>, que controla a saída para o duodeno</li></ul>Não confunda com o <strong>fundus</strong> (tuberosidade maior), que é a porção superior côncava abaixo do diafragma — este sim está na porção vertical.` },
+  // Q2 — Ângulo de His
+  { slideRef: "Slide 9 — Curvaturas", content: `<span class="aula-title">📚 Ângulo de His (Incisura Cárdica)</span>O ângulo de His é formado entre o <strong>bordo esquerdo do esôfago abdominal</strong> e a <strong>curvatura maior</strong> do estômago.<br><br>Este ângulo tem importância clínica direta:<ul><li>Quando <em>agudo</em> (~30–45°): dificulta o refluxo gastroesofágico — função antirrefluxo</li><li>Quando <em>obtuso</em>: favorece a DRGE (doença do refluxo)</li><li>Junto com o esfínter inferior do esôfago (EIE) e a válvula de Gubarow, forma a barreira antirrefluxo</li></ul><strong>Dica de prova:</strong> "Incisura cárdica" = "ângulo de His" = mesmo ângulo. Está na transição esôfago-gástrica, na curvatura MAIOR (não menor).` },
+  // Q3 — Válvula de Gubarow
+  { slideRef: "Slide 11 — Configuração Interna", content: `<span class="aula-title">📚 Válvula do Cárdias (Válvula de Gubarow)</span>A válvula de Gubarow é uma <strong>prega da mucosa gástrica</strong> localizada no cárdias que, quando bem desenvolvida, funciona como mecanismo antirrefluxo.<br><br>Como funciona:<ul><li>A pressão intragástrica comprime a prega contra a parede do esôfago</li><li>Age como uma "comporta" mucosa</li><li>Complementa o EIE (muscular) e o ângulo de His (anatômico)</li></ul><strong>Células parietais</strong> (secretam HCl e fator intrínseco) estão no corpo e fundus — não têm relação com esta válvula.<br><em>Memorize:</em> DRGE = falha de 3 mecanismos: EIE + ângulo de His + válvula de Gubarow.` },
+  // Q4 — Arco vascular curvatura menor
+  { slideRef: "Slide 26 — Artérias do Estômago", content: `<span class="aula-title">📚 Vascularização Arterial do Estômago</span>O estômago possui dois arcos vasculares principais:<br><br><strong>Curvatura MENOR:</strong><ul><li><em>Artéria gástrica esquerda</em> (coronária estomáquica) — ramo direto do tronco celíaco</li><li><em>Artéria gástrica direita</em> — ramo da artéria hepática própria</li></ul><strong>Curvatura MAIOR:</strong><ul><li><em>Artéria gastroepiploica direita</em> — ramo da gastroduodenal</li><li><em>Artéria gastroepiploica esquerda</em> — ramo da esplênica</li></ul>Existe ainda o grupo das <strong>artérias gástricas curtas</strong> (ramos da esplênica) que irrigam o fundus.<br><em>Tronco celíaco → gástrica esquerda → curvatura menor.</em> Esse é o ramo mais calibroso para o estômago.` },
+  // Q5 — Peritônio gástrico
+  { slideRef: "Slide 17 — Peritônio Gástrico", content: `<span class="aula-title">📚 Peritônio Gástrico — Os Três Epiplônios</span>O estômago é coberto pelo peritônio visceral, que forma três epiplônios:<br><br><ul><li><strong>Epiplônio MAIOR</strong> (gastrocólico): une a <em>curvatura maior</em> ao cólon transverso. É o maior, pende como um avental e é a via de acesso à transcavidade.</li><li><strong>Epiplônio MENOR</strong> (gastrohepático): une a <em>curvatura menor</em> ao fígado e ao duodeno. Contém os vasos da curvatura menor.</li><li><strong>Epiplônio GASTROESPLÉNICO</strong>: une a <em>curvatura maior</em> ao hilo do baço. Contém as artérias gástricas curtas.</li></ul><em>Dica:</em> Gastrocólico = maior = acesso cirúrgico à bursa omentalis. Gastrohepático = menor = curvatura menor ao fígado.` },
+  // Q6 — Inervação
+  { slideRef: "Slides 32–33 — Nervos do Estômago", content: `<span class="aula-title">📚 Inervação Gástrica</span>O estômago recebe inervação <strong>autonômica dupla</strong>:<br><br><strong>Parassimpático (vagal):</strong><ul><li>Nervo vago anterior (X par esquerdo) → nervo principal anterior da curvatura menor</li><li>Nervo vago posterior (X par direito) → nervo principal posterior da curvatura menor</li><li>Estimula: secreção ácida, motilidade, esvaziamento gástrico</li></ul><strong>Simpático:</strong><ul><li>Via plexo celíaco (fibras simpáticas e parassimpáticas misturadas)</li><li>Inibe motilidade, causa vasoconstrição</li></ul><em>Clinicamente:</em> A vagotomia troncular bilateral elimina o estímulo colinérgico → reduz secreção ácida (tratamento de úlcera) mas causa gastroparesia como efeito adverso.` },
+  // Q7 — Músculo gástrico
+  { slideRef: "Slide 16 — Constituição Anatômica", content: `<span class="aula-title">📚 Camada Muscular do Estômago</span>O estômago é único no TGI por possuir <strong>três camadas musculares</strong> lisas:<br><br><ul><li><strong>Longitudinal</strong> (externa): contínua com a do esôfago. Na curvatura menor formam a <em>"Corbata Suíça"</em> — arranjo especial em forma de gravata.</li><li><strong>Circular</strong> (média): espessa-se no piloro formando o <em>esfínter pilórico</em>.</li><li><strong>Oblíqua</strong> (interna): exclusiva do estômago, ausente no restante do TGI. Reforça o fundo e o corpo.</li></ul><em>Memorize:</em> Estômago = único com oblíqua. Corbata Suíça = fibras longitudinais na curvatura menor. Células parietais (HCl) = no corpo/fundus.` },
+  // Q8 — Limite direito transcavidade
+  { slideRef: "Slides 20–21 — Transcavidade dos Epiplônios", content: `<span class="aula-title">📚 Transcavidade dos Epiplônios (Bursa Omentalis)</span>A transcavidade é um espaço peritoneal posterior ao estômago. Seus limites:<br><br><ul><li><strong>Superior:</strong> face inferior do fígado e diafragma</li><li><strong>Inferior:</strong> epiplônio gastrocólico</li><li><strong>Anterior:</strong> face posterior do estômago</li><li><strong>Posterior:</strong> parede posterior do abdômen + pâncreas</li><li><strong>Esquerdo:</strong> união dos epiplônios gastroesplénico e pancreaticoesplénico</li><li><strong>Direito:</strong> vestíbulo → <em>Hiato de Winslow</em> (comunicação com o resto da cavidade)</li></ul>A transcavidade tem 4 partes em sequência: <em>Hiato de Winslow → Vestíbulo → Foramen Bursa Omentalis → Cavidade propriamente dita.</em>` },
+  // Q9 — Dimensões
+  { slideRef: "Slide 10 — Dimensões", content: `<span class="aula-title">📚 Dimensões e Localização do Estômago</span>Dados anatômicos essenciais do estômago adulto:<br><br><ul><li><strong>Dimensões:</strong> 25 × 12 × 8 cm</li><li><strong>Capacidade média:</strong> 1.300 cm³ (~1,3 litros)</li><li><strong>Capacidade máxima</strong> com distensão: até ~4 litros</li><li><strong>Localização:</strong> epigástrio + hipocôndrio esquerdo</li><li><strong>Forma:</strong> J maiúsculo</li></ul>O estômago é um <em>reservatório muscular</em> interposto entre esôfago e duodeno, situado no recesso subfrénico esquerdo, abaixo do diafragma e do fígado, acima do mesocólon transverso.` },
+  // Q10 — Veias
+  { slideRef: "Slides 28–29 — Veias do Estômago", content: `<span class="aula-title">📚 Drenagem Venosa Gástrica e Sistema Portal</span>As veias gástricas são <strong>homólogas às artérias</strong> em nome e trajeto, e toda drenagem converge para a <strong>veia porta hepática</strong>.<br><br>Trajeto resumido:<ul><li>Veias gástricas curtas + gastroepiploica esquerda → <em>veia esplênica</em></li><li>Veia gástrica esquerda (coronária) → <em>veia porta diretamente</em></li><li>Veia gastroepiploica direita → <em>veia mesentérica superior</em> → porta</li></ul><strong>Importância clínica:</strong> Na <em>hipertensão portal</em> (ex.: cirrose), o fluxo se inverte e cria shunts porto-sistêmicos → varizes esofágicas e gástricas, cabeça de medusa, hemorroidas. Sangramento varicoso = emergência.` },
+  // Q11 — Limite posterior transcavidade
+  { slideRef: "Slide 20 — Transcavidade", content: `<span class="aula-title">📚 Pâncreas e o Limite Posterior da Bursa Omentalis</span>A parede posterior da transcavidade dos epiplônios é formada pelo <strong>peritônio parietal posterior</strong>, sob o qual se encontra o <strong>pâncreas</strong> (corpo e cauda).<br><br>Isso tem implicações cirúrgicas importantes:<ul><li>Acesso ao pâncreas via epiplônio gastrocólico (abre a bursa)</li><li>Úlceras da parede posterior do estômago perfuram para a bursa → <em>abscesso localizado</em></li><li>Pancreatite aguda → coleções na bursa omentalis</li><li>Trauma da bursa → sempre investigar pâncreas</li></ul><em>O pâncreas produz:</em> insulina/glucagon (endócrino) + amilase/lipase (exócrino). Sua proximidade com a bursa é topograficamente crítica.` },
+  // Q12 — Camadas da parede
+  { slideRef: "Slides 12–14 — Constituição Anatômica", content: `<span class="aula-title">📚 Camadas da Parede Gástrica</span>Como todo o TGI, o estômago tem 4 camadas — de fora para dentro (superficial → profundo):<br><br><ol style="padding-left:18px;"><li><strong>Serosa:</strong> peritônio visceral, cobre quase todo o estômago</li><li><strong>Muscular:</strong> 3 subcamadas (longitudinal + circular + oblíqua)</li><li><strong>Submucosa:</strong> tecido conjuntivo frouxo com vasos, nervos (plexo de Meissner)</li><li><strong>Mucosa:</strong> epitélio + lâmina própria + muscular da mucosa. Contém as glândulas gástricas secretoras.</li></ol><em>Plexos nervosos:</em> Meissner (submucosa) e Auerbach/mioentérico (entre musculares) — compõem o SN entérico.` },
+  // Q13 — Triângulo de Labbé
+  { slideRef: "Slide 25 — Relações Ósseas", content: `<span class="aula-title">📚 Referências Topográficas do Estômago</span>Duas referências clássicas para projeção gástrica na parede abdominal:<br><br><strong>Triângulo de Labbé:</strong><ul><li>Delimitado pelas bordas costais e uma linha vertical</li><li>Área de acesso cirúrgico ao estômago (gastrostomia, biópsia)</li></ul><strong>Espaço Semilunar de Traube:</strong><ul><li>Delimitado pelas costelas inferiores esquerdas, baço e fígado</li><li>Normalmente timpânico à percussão (câmara de ar gástrica)</li><li><em>Clinicamente:</em> macicez nesse espaço = suspeita de esplenomegalia, derrame pleural esquerdo ou estômago cheio</li></ul><em>Dica:</em> Traube timpânico = normal. Traube maciço = investigar.` },
+  // Q14 — Píloro externo
+  { slideRef: "Slide 9 — Cárdias e Píloro", content: `<span class="aula-title">📚 Píloro — Anatomia e Função</span>O píloro é a junção entre o estômago e o duodeno (1ª porção do intestino delgado).<br><br>Características anatômicas:<ul><li>Situado na parte inferior da <em>curvatura menor</em></li><li>Marcado externamente por <strong>espessamento e estreitamento muscular</strong> (esfínter pilórico)</li><li>Palpável cirurgicamente como uma "azeitona"</li><li>Ao contrário do cárdias, tem relevo muscular externo bem definido</li></ul><strong>Esfínter pilórico:</strong> músculo liso circular espessado. Controla esvaziamento gástrico.<br><em>Patologia clássica:</em> estenose hipertrófica do piloro (lactentes, vômitos em jato não biliosos, massa olivar palpável).` },
+  // Q15 — Transcavidade 4 partes
+  { slideRef: "Slide 21 — Transcavidade", content: `<span class="aula-title">📚 As Quatro Partes da Transcavidade dos Epiplônios</span>A bursa omentalis tem <strong>4 porções em sequência</strong> da direita para a esquerda/anterior:<br><br><ol style="padding-left:18px;"><li><strong>Hiato de Winslow:</strong> entrada da transcavidade. Limites: anterior = lig. hepatoduodenal, posterior = VCI, superior = lobo caudado, inferior = duodeno.</li><li><strong>Vestíbulo:</strong> primeiro compartimento após o hiato.</li><li><strong>Foramen Bursa Omentalis:</strong> formado pela foice da artéria coronária + foice da artéria hepática.</li><li><strong>Cavidade propriamente dita:</strong> o espaço amplo atrás do estômago.</li></ol><em>São estruturas distintas e sequenciais</em> — não confunda Hiato de Winslow com Foramen Bursa Omentalis.` },
+  // Q16 — Caso DRGE
+  { slideRef: "Slide 11 — Cárdias e Válvula", content: `<span class="aula-title">📚 Mecanismos Antirrefluxo Gastroesofágico</span>Existem <strong>três mecanismos anatômicos</strong> que evitam o refluxo:<br><br><ul><li><strong>EIE (Esfínter Inferior do Esôfago):</strong> muscular, pressão 10–45 mmHg. Principal barreira.</li><li><strong>Ângulo de His:</strong> ângulo agudo entre esôfago e curvatura maior (~30–45°). Quanto mais agudo, maior a proteção.</li><li><strong>Válvula de Gubarow:</strong> prega mucosa no cárdias que funciona como "tampa" mucosa.</li></ul>DRGE = falha de um ou mais desses mecanismos.<br><em>Esôfago de Barrett</em> = metaplasia do epitélio esofágico por exposição crônica ao ácido → risco de adenocarcinoma. <strong>A hipoplasia da válvula de Gubarow é um fator anatômico predisponente à DRGE.</strong>` },
+  // Q17 — Caso varizes fúndicas
+  { slideRef: "Slides 28–29 — Veias do Estômago", content: `<span class="aula-title">📚 Varizes Gástricas e Hipertensão Portal</span>Na <strong>hipertensão portal</strong> (pressão >12 mmHg), o sangue busca shunts porto-sistêmicos:<br><br><ul><li><em>Varizes esofágicas:</em> veia gástrica esquerda ↔ veias esofágicas (sistema ázigos)</li><li><em>Varizes fúndicas:</em> veias gástricas curtas + gastroepiploica esquerda ↔ veias esofágicas</li><li><em>Cabeça de medusa:</em> veias paraumbilicais</li><li><em>Hemorroidas:</em> veia mesentérica inferior ↔ hemorroidárias</li></ul><strong>Sangramento varicoso</strong> = emergência. Tratamento: ligadura endoscópica, betabloqueador (profilaxia), TIPS.<br><em>Veias gástricas curtas</em> são ramos da esplênica → cirurgia do baço pode afetar fundus gástrico.` },
+  // Q18 — Caso estenose hipertrófica
+  { slideRef: "Slide 9 — Píloro", content: `<span class="aula-title">📚 Estenose Hipertrófica do Piloro</span>Condição pediátrica por <strong>hipertrofia do músculo circular do esfínter pilórico</strong>.<br><br>Quadro clínico clássico:<ul><li>Lactente 3–6 semanas de vida</li><li>Vômitos em jato <em>não biliosos</em> (antes do duodeno → sem bile)</li><li>Massa olivar palpável no epigástrio direito</li><li>Peristaltismo visível</li></ul>Diagnóstico: <strong>USG</strong> (espessura muscular >4 mm, diâmetro >14 mm).<br><br>Distúrbio metabólico: perda de HCl pelo vômito → <em>alcalose metabólica hipoclorêmica hipocalêmica</em> (rim retém H+ e elimina K+).<br><br>Tratamento: <strong>piloromiotomia de Ramstedt</strong> (incisão do esfínter sem abrir mucosa).` },
+  // Q19 — Caso gastrectomia B12
+  { slideRef: "Slide 16 — Células Gástricas", content: `<span class="aula-title">📚 Células Parietais e Vitamina B12</span>As <strong>células parietais (oxínticas)</strong> do corpo e fundus gástrico secretam:<br><br><ul><li><strong>HCl</strong> (via bomba H+/K+ ATPase — alvo do omeprazol)</li><li><strong>Fator Intrínseco de Castle</strong> — glicoproteína essencial para absorção de B12 no íleo terminal</li></ul>Após gastrectomia total: sem células parietais → sem FI → sem absorção de B12 → <em>anemia megaloblástica</em>.<br><br><em>Outras células gástricas:</em><ul><li>Células principais (zimogênicas): pepsinogênio</li><li>Células G (antro): gastrina</li><li>Células D: somatostatina</li><li>Células enterocromafins: serotonina, histamina</li></ul><strong>Tratamento:</strong> reposição de B12 intramuscular (bypassa a necessidade de FI).` },
+  // Q20 — Caso forame Winslow
+  { slideRef: "Slide 21 — Transcavidade", content: `<span class="aula-title">📚 Hiato de Winslow — Limites Cirúrgicos</span>O <strong>Hiato (Forame) de Winslow</strong> é a única comunicação natural entre a bursa omentalis e o restante da cavidade peritoneal.<br><br>Limites clássicos:<ul><li><strong>Anterior:</strong> ligamento hepatoduodenal (tríade portal: veia porta + artéria hepática própria + colédoco)</li><li><strong>Posterior:</strong> veia cava inferior (VCI)</li><li><strong>Superior:</strong> lobo caudado do fígado (segmento I de Couinaud)</li><li><strong>Inferior:</strong> 1ª porção do duodeno</li></ul><em>Manobra de Pringle:</em> compressão digital do ligamento hepatoduodenal pelo Hiato de Winslow para controlar hemorragia hepática. <strong>Clinicamente vital conhecer esses limites.</strong>` },
+  // Q21 — Caso úlcera perfurada
+  { slideRef: "Slides 17–19 — Peritônio Gástrico", content: `<span class="aula-title">📚 Epiplônio Gastrocólico — Acesso à Bursa</span>O <strong>epiplônio gastrocólico</strong> (epiplônio maior) é a estrutura que:<ul><li>Une a curvatura maior do estômago ao cólon transverso</li><li>Forma o limite inferior da bursa omentalis</li><li>É o <em>acesso cirúrgico padrão</em> para a transcavidade (gastrotomia posterior, pancreatite, úlcera posterior)</li></ul>Úlcera da parede posterior do estômago:<ul><li>Perfura para dentro da bursa omentalis</li><li>Coleção inicialmente <em>contida</em> (não peritonite difusa)</li><li>Pode erodir o pâncreas → pancreatite por contiguidade</li><li>Artéria gastroduodenal = risco de sangramento grave se erode posteriormente</li></ul><em>Acesso cirúrgico:</em> seccionar epiplônio gastrocólico → abre bursa → expõe parede posterior.` },
+  // Q22 — Caso vagotomia
+  { slideRef: "Slides 32–33 — Nervos", content: `<span class="aula-title">📚 Nervos Vagos e Vagotomia</span>Os <strong>nervos vagos</strong> (X par craniano) são o principal controle parassimpático do estômago:<br><br><ul><li><strong>Vago anterior</strong> (esquerdo): nervo principal anterior da curvatura menor. Ramos hepáticos e gástricos anteriores.</li><li><strong>Vago posterior</strong> (direito): nervo principal posterior da curvatura menor. Ramos celíacos e gástricos posteriores.</li></ul>Efeitos vagais no estômago: <em>↑ secreção ácida, ↑ motilidade, ↑ esvaziamento gástrico, relaxamento do fundus.</em><br><br>Vagotomia troncular bilateral:<ul><li>Reduz secreção ácida (tratamento de úlcera refratária)</li><li>Causa: <em>gastroparesia</em> (estômago não esvazia) + diarreia (↑ motilidade intestinal)</li><li>Geralmente associada à piloroplastia ou antrectomia</li></ul>` },
+  // Q23 — Caso linfáticos
+  { slideRef: "Slides 30–31 — Linfáticos", content: `<span class="aula-title">📚 Drenagem Linfática Gástrica</span>A drenagem linfática do estômago <strong>acompanha as artérias</strong> em sentido inverso:<br><br><ul><li>Curvatura menor → linfonodos gástricos esquerdos → <em>linfonodos celíacos</em></li><li>Curvatura maior → linfonodos gastroepiploicos → celíacos</li><li>Fundus → linfonodos esplênicos → celíacos</li></ul>Confluência final: linfonodos celíacos → <strong>tronco intestinal</strong> → cisterna do quilo → ducto torácico.<br><br><em>Aplicação clínica no câncer gástrico:</em><ul><li>Linfonodo de Virchow (supraclavicular esquerdo) = metástase à distância via ducto torácico</li><li>Linfonodo de Irish (axilar esquerdo) = metástase</li><li>Tumor de Krukenberg = metástase ovariana por via linfática/peritoneal</li></ul>` },
+  // Q24 — Caso trauma
+  { slideRef: "Slides 20–21 — Transcavidade", content: `<span class="aula-title">📚 Pâncreas e a Bursa Omentalis no Trauma</span>O <strong>corpo e cauda do pâncreas</strong> estão intimamente aplicados à parede posterior da bursa omentalis, no retroperitônio.<br><br>No trauma abdominal fechado:<ul><li>Impacto no epigástrio comprime pâncreas contra coluna vertebral</li><li>Lesão pancreática → coleção na bursa → <em>pseudocisto pancreático</em></li><li>Amilase elevada no líquido da transcavidade = pancreatite traumática</li></ul><em>Outros limites em risco no trauma da bursa:</em><ul><li>Posterior: aorta, VCI, rins</li><li>Esquerdo: baço (hilo esplênico)</li><li>Anterior: estômago</li></ul><strong>TC de abdômen</strong> com contraste é o padrão ouro para avaliar lesões na bursa.` },
+  // Q25 — Caso incisura angularis
+  { slideRef: "Slides 6–9 — Configuração", content: `<span class="aula-title">📚 Incisura Angularis — Marco Endoscópico e Clínico</span>A <strong>incisura angularis</strong> (incisura angular) é o ponto de <em>maior concavidade da curvatura menor</em>, marcando a transição entre as porções vertical e horizontal do estômago.<br><br>Importância clínica:<ul><li><em>Local mais frequente de úlceras gástricas benignas</em> — mucosa mais fina e exposta ao ácido</li><li>Local preferencial do <em>adenocarcinoma do tipo intestinal</em></li><li>Referência endoscópica: separa antro (abaixo) do corpo (acima)</li><li>Visível na radiografia com bário como um "dente" na curvatura menor</li></ul><strong>Não confunda:</strong><ul><li>Incisura angularis = curvatura MENOR, transição vertical/horizontal</li><li>Ângulo de His = curvatura MAIOR, junção esôfago-gástrica</li></ul>` }
+];
+
+/* ═══════════════ ELABORATE DECORATION ═══════════════ */
+function initBows() {
+  const container = document.getElementById('bowsBg');
+
+  /* ── glowing orbs ── */
+  const orbData = [
+    { left:'5%',  top:'12%', w:340, h:280, color:'rgba(244,114,182,1)',  op:0.13, dur:'8s',  delay:'0s'  },
+    { left:'70%', top:'5%',  w:260, h:220, color:'rgba(251,113,133,1)',  op:0.10, dur:'11s', delay:'2s'  },
+    { left:'80%', top:'75%', w:300, h:260, color:'rgba(244,114,182,1)',  op:0.12, dur:'9s',  delay:'1s'  },
+    { left:'2%',  top:'70%', w:220, h:200, color:'rgba(232,121,249,1)',  op:0.09, dur:'13s', delay:'4s'  },
+    { left:'40%', top:'90%', w:180, h:150, color:'rgba(251,113,133,1)',  op:0.07, dur:'7s',  delay:'3s'  },
+  ];
+  orbData.forEach(o => {
+    const el = document.createElement('div');
+    el.className = 'orb';
+    el.style.cssText = `left:${o.left};top:${o.top};width:${o.w}px;height:${o.h}px;background:${o.color};--op:${o.op};--dur:${o.dur};--delay:${o.delay};`;
+    container.appendChild(el);
+  });
+
+  /* ── bow emojis ── */
+  const emojis   = ['🎀','🫧','🪷','💉','🌸','🎀','🫧','🪷','✨','🎀'];
+  const bowConfig = [
+    { left:'3%',   top:'8%',  sz:48, op:0.09, dur:'10s', delay:'0s',   r0:'-6deg',  r1:'4deg',   r2:'-10deg' },
+    { left:'88%',  top:'4%',  sz:42, op:0.08, dur:'12s', delay:'1.5s', r0:'8deg',   r1:'-3deg',  r2:'11deg'  },
+    { left:'92%',  top:'55%', sz:36, op:0.07, dur:'9s',  delay:'0.5s', r0:'-4deg',  r1:'6deg',   r2:'-8deg'  },
+    { left:'5%',   top:'60%', sz:44, op:0.08, dur:'11s', delay:'3s',   r0:'5deg',   r1:'-7deg',  r2:'3deg'   },
+    { left:'45%',  top:'2%',  sz:32, op:0.06, dur:'14s', delay:'2s',   r0:'-8deg',  r1:'2deg',   r2:'-5deg'  },
+    { left:'50%',  top:'92%', sz:38, op:0.07, dur:'10s', delay:'4s',   r0:'3deg',   r1:'-9deg',  r2:'6deg'   },
+    { left:'20%',  top:'85%', sz:28, op:0.06, dur:'8s',  delay:'1s',   r0:'-5deg',  r1:'8deg',   r2:'-3deg'  },
+    { left:'72%',  top:'88%', sz:34, op:0.06, dur:'13s', delay:'5s',   r0:'7deg',   r1:'-4deg',  r2:'9deg'   },
+    { left:'15%',  top:'25%', sz:22, op:0.05, dur:'16s', delay:'6s',   r0:'-3deg',  r1:'5deg',   r2:'-6deg'  },
+    { left:'78%',  top:'30%', sz:26, op:0.05, dur:'15s', delay:'2.5s', r0:'4deg',   r1:'-6deg',  r2:'2deg'   },
+    { left:'30%',  top:'50%', sz:18, op:0.04, dur:'18s', delay:'7s',   r0:'-7deg',  r1:'3deg',   r2:'-4deg'  },
+    { left:'62%',  top:'45%', sz:20, op:0.04, dur:'17s', delay:'8s',   r0:'6deg',   r1:'-5deg',  r2:'7deg'   },
+  ];
+  bowConfig.forEach((b, i) => {
+    const el = document.createElement('div');
+    el.className = 'bow';
+    el.textContent = emojis[i % emojis.length];
+    el.style.cssText = `left:${b.left};top:${b.top};--sz:${b.sz}px;--op:${b.op};--dur:${b.dur};--delay:${b.delay};--r0:${b.r0};--r1:${b.r1};--r2:${b.r2};`;
+    container.appendChild(el);
+  });
+
+  /* ── sparkle stars ── */
+  const sparkles = [
+    { left:'12%', top:'18%', dur:'3.2s', delay:'0s'   },
+    { left:'82%', top:'12%', dur:'4.1s', delay:'1s'   },
+    { left:'95%', top:'42%', dur:'2.8s', delay:'0.5s' },
+    { left:'8%',  top:'45%', dur:'5s',   delay:'2s'   },
+    { left:'55%', top:'7%',  dur:'3.7s', delay:'1.5s' },
+    { left:'38%', top:'95%', dur:'4.4s', delay:'3s'   },
+    { left:'66%', top:'78%', dur:'3.0s', delay:'0.8s' },
+    { left:'22%', top:'70%', dur:'5.2s', delay:'4s'   },
+    { left:'75%', top:'60%', dur:'2.5s', delay:'2.5s' },
+  ];
+  sparkles.forEach(s => {
+    const el = document.createElement('div');
+    el.className = 'sparkle';
+    el.style.cssText = `left:${s.left};top:${s.top};--dur:${s.dur};--delay:${s.delay};`;
+    el.innerHTML = `<svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+      <path d="M7 0L8 6L14 7L8 8L7 14L6 8L0 7L6 6Z" fill="rgba(244,114,182,0.9)"/>
+    </svg>`;
+    container.appendChild(el);
+  });
+
+  /* ── tiny diamonds ── */
+  const diamonds = [
+    { left:'25%', top:'15%', sz:'5px',  dur:'12s', delay:'0s'   },
+    { left:'60%', top:'22%', sz:'7px',  dur:'16s', delay:'3s'   },
+    { left:'10%', top:'52%', sz:'4px',  dur:'10s', delay:'1s'   },
+    { left:'85%', top:'48%', sz:'6px',  dur:'14s', delay:'5s'   },
+    { left:'40%', top:'80%', sz:'5px',  dur:'11s', delay:'2s'   },
+    { left:'70%', top:'15%', sz:'4px',  dur:'18s', delay:'7s'   },
+    { left:'18%', top:'90%', sz:'6px',  dur:'13s', delay:'4s'   },
+    { left:'90%', top:'72%', sz:'5px',  dur:'9s',  delay:'6s'   },
+    { left:'48%', top:'38%', sz:'3px',  dur:'20s', delay:'9s'   },
+    { left:'33%', top:'65%', sz:'4px',  dur:'15s', delay:'8s'   },
+  ];
+  diamonds.forEach(d => {
+    const el = document.createElement('div');
+    el.className = 'diamond';
+    el.style.cssText = `left:${d.left};top:${d.top};--sz:${d.sz};width:${d.sz};height:${d.sz};--dur:${d.dur};--delay:${d.delay};`;
+    container.appendChild(el);
+  });
+
+  /* ── SVG ribbon lines (top-left and bottom-right corners) ── */
+  const svgTL = document.createElementNS('http://www.w3.org/2000/svg','svg');
+  svgTL.setAttribute('width','220'); svgTL.setAttribute('height','220');
+  svgTL.setAttribute('viewBox','0 0 220 220');
+  svgTL.className = 'ribbon-svg';
+  svgTL.style.cssText = 'top:0;left:0;';
+  svgTL.innerHTML = `
+    <path d="M-10 60 Q40 20 100 50 Q160 80 210 30" stroke="rgba(244,114,182,0.9)" stroke-width="1.2" fill="none"/>
+    <path d="M-10 90 Q50 50 110 75 Q170 100 220 55" stroke="rgba(251,113,133,0.7)" stroke-width="0.8" fill="none"/>
+    <path d="M20 -10 Q55 45 30 100 Q10 150 60 200" stroke="rgba(244,114,182,0.6)" stroke-width="0.8" fill="none"/>
+    <circle cx="100" cy="50" r="3" fill="rgba(244,114,182,0.5)"/>
+    <circle cx="30" cy="100" r="2" fill="rgba(251,113,133,0.4)"/>
+  `;
+  container.appendChild(svgTL);
+
+  const svgBR = document.createElementNS('http://www.w3.org/2000/svg','svg');
+  svgBR.setAttribute('width','220'); svgBR.setAttribute('height','220');
+  svgBR.setAttribute('viewBox','0 0 220 220');
+  svgBR.className = 'ribbon-svg';
+  svgBR.style.cssText = 'bottom:0;right:0;';
+  svgBR.innerHTML = `
+    <path d="M230 160 Q180 200 120 170 Q60 140 10 190" stroke="rgba(244,114,182,0.9)" stroke-width="1.2" fill="none"/>
+    <path d="M230 130 Q170 170 110 145 Q50 120 0 165" stroke="rgba(251,113,133,0.7)" stroke-width="0.8" fill="none"/>
+    <path d="M200 230 Q165 175 190 120 Q210 70 160 20" stroke="rgba(244,114,182,0.6)" stroke-width="0.8" fill="none"/>
+    <circle cx="120" cy="170" r="3" fill="rgba(244,114,182,0.5)"/>
+    <circle cx="190" cy="120" r="2" fill="rgba(251,113,133,0.4)"/>
+  `;
+  container.appendChild(svgBR);
+
+  /* ── SVG bow illustration (top-right) ── */
+  const svgBow = document.createElementNS('http://www.w3.org/2000/svg','svg');
+  svgBow.setAttribute('width','110'); svgBow.setAttribute('height','80');
+  svgBow.setAttribute('viewBox','0 0 110 80');
+  svgBow.className = 'ribbon-svg';
+  svgBow.style.cssText = 'top:16px;right:16px;opacity:0.12;';
+  svgBow.innerHTML = `
+    <path d="M55 40 C35 25 10 15 8 30 C6 45 32 48 55 40Z" fill="rgba(244,114,182,1)" opacity="0.9"/>
+    <path d="M55 40 C75 25 100 15 102 30 C104 45 78 48 55 40Z" fill="rgba(244,114,182,1)" opacity="0.9"/>
+    <path d="M55 40 C35 55 10 65 8 50 C6 35 32 32 55 40Z" fill="rgba(251,113,133,1)" opacity="0.8"/>
+    <path d="M55 40 C75 55 100 65 102 50 C104 35 78 32 55 40Z" fill="rgba(251,113,133,1)" opacity="0.8"/>
+    <ellipse cx="55" cy="40" rx="7" ry="7" fill="rgba(244,114,182,1)"/>
+    <line x1="55" y1="40" x2="48" y2="72" stroke="rgba(244,114,182,0.7)" stroke-width="1.5"/>
+    <line x1="55" y1="40" x2="62" y2="72" stroke="rgba(251,113,133,0.7)" stroke-width="1.5"/>
+  `;
+  container.appendChild(svgBow);
+
+  /* ── SVG bow illustration (bottom-left) ── */
+  const svgBow2 = document.createElementNS('http://www.w3.org/2000/svg','svg');
+  svgBow2.setAttribute('width','90'); svgBow2.setAttribute('height','65');
+  svgBow2.setAttribute('viewBox','0 0 110 80');
+  svgBow2.className = 'ribbon-svg';
+  svgBow2.style.cssText = 'bottom:20px;left:10px;opacity:0.10;transform:scaleX(-1) rotate(-15deg);';
+  svgBow2.innerHTML = svgBow.innerHTML;
+  container.appendChild(svgBow2);
+}
+
+/* ═══════════════ SCREENS ═══════════════ */
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function startQuiz() {
+  currentQ = 0;
+  answers = new Array(ALL_QUESTIONS.length).fill(null);
+  showScreen('screenQuiz');
+  renderQuestion();
+}
+
+function randomCorner(id) {
+  const pool = ['🎀','🫧','🪷','💉','🌸','✨'];
+  const el = document.getElementById(id);
+  if(el) el.textContent = pool[Math.floor(Math.random()*pool.length)];
+}
+
+/* ═══════════════ RENDER QUESTION ═══════════════ */
+function renderQuestion() {
+  const q = ALL_QUESTIONS[currentQ];
+  const total = ALL_QUESTIONS.length;
+  const ans = answers[currentQ];
+
+  // progress
+  document.getElementById('qLabel').textContent = `Questão ${currentQ + 1} de ${total}`;
+  document.getElementById('sectionTag').textContent = q.type === 'caso' ? '🎀 Caso Clínico' : '🫧 Objetiva';
+  document.getElementById('progressFill').style.width = ((currentQ + 1) / total * 100) + '%';
+  document.getElementById('navCounter').textContent = `${currentQ + 1}/${total}`;
+  const dkBtn = document.getElementById('btnDontKnow');
+  if(dkBtn) dkBtn.disabled = ans !== null;
+  document.getElementById('qTypeBadge').textContent = q.badge;
+
+  // case intro
+  const caseDiv = document.getElementById('caseIntro');
+  if (q.type === 'caso' && q.caseText) {
+    caseDiv.style.display = 'block';
+    caseDiv.innerHTML = q.caseText;
+  } else {
+    caseDiv.style.display = 'none';
+  }
+
+  document.getElementById('questionText').textContent = q.text;
+
+  // options
+  const list = document.getElementById('optionsList');
+  list.innerHTML = '';
+  const letters = ['A','B','C','D','E'];
+
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.disabled = ans !== null;
+    btn.innerHTML = `<span class="option-letter">${letters[i]}</span><span>${opt}</span>`;
+
+    if (ans !== null) {
+      if (ans.dontknow) {
+        if (i === q.correct) { btn.classList.add('revealed'); }
+      } else if (ans.revealed) {
+        if (i === q.correct) { btn.classList.add('revealed'); }
+      } else {
+        if (i === ans.chosen && i !== q.correct) { btn.classList.add('wrong'); }
+        if (i === q.correct) { btn.classList.add('correct'); }
+      }
+    }
+
+    btn.onclick = () => chooseOption(i);
+    list.appendChild(btn);
+  });
+
+  // feedback
+  renderFeedback(q, ans);
+
+  // rotate corner emojis per question
+  const qEmojis = [
+    ['🌸','✨','🎀','🫧'],['💉','🪷','🌸','🎀'],['🫧','🎀','✨','🪷'],
+    ['🪷','💉','🫧','✨'],['🎀','🌸','💉','🫧'],['✨','🫧','🪷','🌸'],
+    ['🌸','🎀','🫧','💉'],['💉','✨','🌸','🪷'],['🪷','🫧','🎀','✨'],
+  ];
+  const set = qEmojis[currentQ % qEmojis.length];
+  const el = document.getElementById('ceqTL');
+  if(el) el.textContent = set[0];
+
+  // card animation
+  const card = document.getElementById('questionCard');
+  card.classList.remove('fade-in');
+  void card.offsetWidth;
+  card.classList.add('fade-in');
+}
+
+function renderFeedback(q, ans) {
+  const box = document.getElementById('feedbackBox');
+  const header = document.getElementById('fbHeader');
+  const text = document.getElementById('fbText');
+
+  if (ans === null) {
+    box.classList.remove('show','correct-fb','wrong-fb','revealed-fb','dontknow-fb');
+    return;
+  }
+
+  box.classList.add('show');
+
+  if (ans.dontknow) {
+    box.className = 'feedback-box show dontknow-fb';
+    header.className = 'fb-header dontknow-h';
+    header.innerHTML = '📖 Marcada para aprender';
+    text.innerHTML = `A resposta correta é <strong>${['A','B','C','D','E'][q.correct]}. ${q.options[q.correct]}</strong><br><br>Essa questão vai aparecer na sua lista de <strong>Aprender</strong> no final. Não esquece de revisar! 🌸`;
+  } else if (ans.revealed) {
+    box.className = 'feedback-box show revealed-fb';
+    header.className = 'fb-header revealed-h';
+    header.innerHTML = '👁 Resposta Revelada';
+    text.innerHTML = `<strong>Resposta correta: ${['A','B','C','D','E'][q.correct]}. ${q.options[q.correct]}</strong><br><br>${q.explanation}`;
+  } else if (ans.chosen === q.correct) {
+    box.className = 'feedback-box show correct-fb';
+    header.className = 'fb-header correct-h';
+    header.innerHTML = '✅ Correto! Muito bem!';
+    text.innerHTML = q.explanation;
+  } else {
+    box.className = 'feedback-box show wrong-fb';
+    header.className = 'fb-header wrong-h';
+    header.innerHTML = `❌ Incorreto — A correta era <strong>${['A','B','C','D','E'][q.correct]}</strong>`;
+    text.innerHTML = q.explanation;
+  }
+}
+
+/* ═══════════════ INTERACTIONS ═══════════════ */
+function chooseOption(index) {
+  if (answers[currentQ] !== null) return;
+  const q = ALL_QUESTIONS[currentQ];
+  answers[currentQ] = { chosen: index, revealed: false, dontknow: false };
+  renderQuestion();
+  if (index !== q.correct) {
+    document.getElementById('questionCard').classList.add('shake');
+    setTimeout(() => document.getElementById('questionCard').classList.remove('shake'), 400);
+  }
+}
+
+function markDontKnow() {
+  if (answers[currentQ] !== null) return;
+  answers[currentQ] = { chosen: null, revealed: false, dontknow: true };
+  renderQuestion();
+}
+
+function showAnswer() {
+  if (answers[currentQ] !== null) return;
+  answers[currentQ] = { chosen: null, revealed: true };
+  renderQuestion();
+}
+
+function resetQuestion() {
+  answers[currentQ] = null;
+  renderQuestion();
+}
+
+function prevQuestion() {
+  if (currentQ > 0) {
+    currentQ--;
+    renderQuestion();
+  }
+}
+
+function nextQuestion() {
+  if (currentQ < ALL_QUESTIONS.length - 1) {
+    currentQ++;
+    renderQuestion();
+  } else {
+    showResults();
+  }
+}
+
+/* ═══════════════ RESULTS ═══════════════ */
+function showResults() {
+  showScreen('screenResults');
+
+  const correct = answers.filter((a, i) => a && !a.revealed && !a.dontknow && a.chosen === ALL_QUESTIONS[i].correct).length;
+  const dontknowCount = answers.filter(a => a && a.dontknow).length;
+  const total = ALL_QUESTIONS.length;
+  const pct = Math.round(correct / total * 100);
+
+  // emoji/message
+  const emoji = pct >= 80 ? '🎀' : pct >= 60 ? '💉' : '🪷';
+  const title = pct >= 80 ? 'Excelente desempenho!' : pct >= 60 ? 'Bom trabalho!' : 'Continue estudando!';
+  document.getElementById('resultsEmoji').textContent = emoji;
+  document.getElementById('resultsTitle').textContent = title;
+  document.getElementById('resultsSubtitle').textContent = `Você acertou ${correct} de ${total} questões (${pct}%)`;
+  document.getElementById('scoreNum').textContent = `${pct}%`;
+
+  // arc
+  const circumference = 345.4;
+  const offset = circumference - (pct / 100) * circumference;
+  const arc = document.getElementById('scoreArc');
+  arc.style.strokeDashoffset = circumference;
+  setTimeout(() => {
+    arc.style.transition = 'stroke-dashoffset 1.2s ease';
+    arc.style.strokeDashoffset = offset;
+  }, 200);
+
+  // tab counts
+  const wrongCount = answers.filter((a, i) => !a || a.revealed || (!a.dontknow && a.chosen !== ALL_QUESTIONS[i].correct)).length;
+  document.getElementById('correctCount').textContent = correct;
+  document.getElementById('wrongCount').textContent = wrongCount;
+  document.getElementById('learnCount').textContent = dontknowCount;
+
+  randomCorner('resCorner');
+  // don't auto-open any tab — let user click
+  currentTab = null;
+  document.getElementById('tabCorrect').className = 'tab-btn';
+  document.getElementById('tabWrong').className = 'tab-btn';
+  const tl = document.getElementById('tabLearn'); if(tl) tl.className = 'tab-btn';
+  document.getElementById('reviewList').innerHTML = '';
+}
+
+function showTab(tab) {
+  if(currentTab === tab) { return; } // toggle off not needed, just re-render
+  currentTab = tab;
+  document.getElementById('tabCorrect').className = 'tab-btn' + (tab === 'correct' ? ' active-correct' : '');
+  document.getElementById('tabWrong').className = 'tab-btn' + (tab === 'wrong' ? ' active-wrong' : '');
+  document.getElementById('tabLearn').className = 'tab-btn' + (tab === 'learn' ? ' active-learn' : '');
+
+  const list = document.getElementById('reviewList');
+  list.innerHTML = '';
+
+  ALL_QUESTIONS.forEach((q, i) => {
+    const ans = answers[i];
+    const isCorrect = ans && !ans.revealed && ans.chosen === q.correct;
+    if (tab === 'correct' && !isCorrect) return;
+    if (tab === 'wrong' && isCorrect) return;
+    if (tab === 'wrong' && ans && ans.dontknow) return;
+
+    const item = document.createElement('div');
+    item.className = 'review-item';
+
+    const letters = ['A','B','C','D','E'];
+    let answerChips = '';
+    if (ans && ans.revealed) {
+      answerChips = `<span class="answer-chip only-correct">✅ Resposta revelada — Correta: ${letters[q.correct]}</span>`;
+    } else if (ans) {
+      if (!isCorrect) {
+        answerChips = `<span class="answer-chip you">Sua resposta: ${letters[ans.chosen]}</span>
+        <span class="answer-chip correct-chip">Correta: ${letters[q.correct]}</span>`;
+      } else {
+        answerChips = `<span class="answer-chip only-correct">✅ ${letters[ans.chosen]} — Correta!</span>`;
+      }
+    } else {
+      answerChips = `<span class="answer-chip you">Não respondida</span><span class="answer-chip correct-chip">Correta: ${letters[q.correct]}</span>`;
+    }
+
+    item.innerHTML = `
+      <div class="review-item-header" onclick="toggleReview(this)">
+        <span class="review-num ${isCorrect ? 'c' : 'w'}">${i + 1}</span>
+        <span class="review-q-text">${q.text.substring(0, 100)}${q.text.length > 100 ? '...' : ''}</span>
+        <span class="review-expand">▾</span>
+      </div>
+      <div class="review-detail">
+        <div class="review-answer-row">${answerChips}</div>
+        ${q.caseText ? `<div class="case-intro" style="margin-bottom:12px;font-size:12px;">${q.caseText}</div>` : ''}
+        <div class="review-explanation"><strong>📚 Explicação:</strong><br>${q.explanation}</div>
+        <div style="margin-top:12px;">
+          <button class="btn btn-ghost btn-sm" onclick="goToQuestion(${i})">↩ Ir para esta questão</button>
+        </div>
+      </div>`;
+
+    list.appendChild(item);
+  });
+
+  if (tab === 'learn') {
+    list.innerHTML = '';
+    const dkIndices = answers.map((a,i) => a && a.dontknow ? i : -1).filter(i => i >= 0);
+    if (dkIndices.length === 0) {
+      list.innerHTML = '<div style="text-align:center;padding:32px;color:var(--gray2);font-size:14px;">🎉 Você não marcou nenhuma questão como "Não sei"!</div>';
+    } else {
+      const intro = document.createElement('div');
+      intro.className = 'learn-intro';
+      intro.innerHTML = `<h3>📖 Aulas das questões que você não sabia</h3><p>${dkIndices.length} questão(ões) para revisar — clique para expandir cada aula</p>`;
+      list.appendChild(intro);
+
+      const letters = ['A','B','C','D','E'];
+      dkIndices.forEach(i => {
+        const q = ALL_QUESTIONS[i];
+        const lesson = LESSONS[i];
+        const item = document.createElement('div');
+        item.className = 'learn-item';
+        item.innerHTML = `
+          <div class="learn-item-header" onclick="toggleLearn(this)">
+            <span class="learn-num">${i+1}</span>
+            <span class="learn-q-text">${q.text.substring(0,110)}${q.text.length>110?'...':''}</span>
+            <span class="learn-expand">▾</span>
+          </div>
+          <div class="learn-detail">
+            ${q.type==='caso'&&q.caseText?`<div class="case-intro" style="margin:14px 0 10px;font-size:12px;">${q.caseText}</div>`:''}
+            <div class="learn-correct-chip">✅ Resposta correta: ${letters[q.correct]} — ${q.options[q.correct]}</div>
+            <div class="learn-aula">${lesson.content}</div>
+            <div class="slide-ref">
+              <span class="slide-ref-icon">🪷</span>
+              <span>Referência: <strong>${lesson.slideRef}</strong></span>
+            </div>
+            <div style="margin-top:12px;">
+              <button class="btn btn-ghost btn-sm" onclick="goToQuestion(${i})">↩ Ir para a questão</button>
+            </div>
+          </div>`;
+        list.appendChild(item);
+      });
+    }
+    return;
+  }
+
+  if (list.children.length === 0) {
+    list.innerHTML = `<div style="text-align:center;padding:32px;color:var(--gray2);font-size:14px;">
+      ${tab === 'correct' ? '😢 Nenhum acerto ainda — continue tentando!' : '🎉 Nenhum erro — parabéns!'}
+    </div>`;
+  }
+}
+
+function toggleLearn(header) {
+  header.parentElement.classList.toggle('expanded');
+}
+
+function toggleReview(header) {
+  const item = header.parentElement;
+  item.classList.toggle('expanded');
+}
+
+function goToQuestion(index) {
+  currentQ = index;
+  showScreen('screenQuiz');
+  renderQuestion();
+}
+
+function resetAll() {
+  answers = new Array(ALL_QUESTIONS.length).fill(null);
+  currentQ = 0;
+  showScreen('screenStart');
+  randomCorner('startCorner');
+}
+
+/* ═══════════════ INIT ═══════════════ */
+initBows();
+</script>
+</body>
+</html>
